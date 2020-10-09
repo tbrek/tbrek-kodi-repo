@@ -1,0 +1,20 @@
+dist: trusty
+language: python
+
+python:
+  - "2.7"
+
+env:
+  global:
+    # !!! Replace the encryption label below with YOURS
+    - ENCRYPTION_LABEL: "189e52c2c347"
+    # !!! Replace the email below with YOURS
+    - COMMIT_AUTHOR_EMAIL: "me@tombrek.com"
+
+script:
+  - bash .github/build.sh
+
+branches:
+  only:
+    - master
+    # Add more branches if required
