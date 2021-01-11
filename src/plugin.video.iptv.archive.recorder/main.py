@@ -345,7 +345,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         local_starttime = now
         # immediate = True
         past_recording = False
-        xbmcgui.Dialog().ok("Can not download live stream","Please try when programme has finished")
+        xbmcgui.Dialog().ok(get_string("Can not download live stream"),
+                            get_string("Can not download live stream_sub"))
         return
     elif (local_starttime < now) and (local_endtime < now):
         # immediate = True

@@ -30,6 +30,7 @@
   <extension point="xbmc.service" library="server.py" start="login"/>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Download from IPTV Simple Client with ffmpeg.</summary>
+    <summary lang="pl">Pobierz program z IPTV Simple Client używając ffmpeg.</summary>
     <description lang="en">
 Set your recording path and ffmpeg location and adjust timezone in M3U section.
 On Android ffmpeg will be copied to /data/data to be runnable.
@@ -39,7 +40,11 @@ By defult stream is splitted into 1h parts, then they're merged, as some
 IPTV providers close the streams in archive after 1h.
 
     </description>
+    <description lang="pl">
+Coś tam najebać trzeba po polsku
+    </description>
     <disclaimer lang="en">Make sure recording streams is legal in your country.</disclaimer>
+    <disclaimer lang="pl">Upewnij się, że nagrywanie TV jest legalne w Twoim kraju.</disclaimer>
     <source>https://github.com/tbrek/IPTV-Archive-Downloader</source>
     <forum></forum>
     <language>en</language>
