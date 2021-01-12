@@ -50,7 +50,7 @@ def log(v):
     xbmc.log(repr(v), xbmc.LOGERROR)
 
 
-
+addon = xbmcaddon.Addon()
 plugin = Plugin()
 big_list_view = True
 
@@ -129,7 +129,8 @@ def unescape( str ):
 def check_has_db_filled_show_error_message_ifn(db_cursor):
     table_found = db_cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='streams'").fetchone()
     if not table_found:
-        xbmcgui.Dialog().notification("IPTV Recorder", get_string("Database not found"))
+        xbmcgui.Dialog().notification("IPTV Archive Downloader",
+                                      addon.getLocalizedString(30052))
         return False
     return True
 
@@ -225,7 +226,8 @@ def ffmpeg_location():
     if xbmcvfs.exists(ffmpeg):
         return ffmpeg
     else:
-        xbmcgui.Dialog().notification("IPTV Recorder", get_string("ffmpeg exe not found!"))
+        xbmcgui.Dialog().notification("IPTV Archive Downloader",
+                                      addon.getLocalizedString(30056))
 
 
 def debug_dialog(line2, line3, line4):
@@ -345,7 +347,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         local_starttime = now
         # immediate = True
         past_recording = False
-        xbmcgui.Dialog().ok("Can not download live stream","Please try when programme has finished")
+        xbmcgui.Dialog().ok(addon.getLocalizedString(30050),
+                            addon.getLocalizedString(30051))
         return
     elif (local_starttime < now) and (local_endtime < now):
         # immediate = True
@@ -354,8 +357,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     else:
         # immediate = False
         past_recording = False
-        xbmcgui.Dialog().ok("Can not download live stream",
-                            "Please try when programme has finished")
+        xbmcgui.Dialog().ok(addon.getLocalizedString(30050),
+                            addon.getLocalizedString(30051))
         return
 
     kodi_recordings = xbmc.translatePath(plugin.get_setting('recordings', str))
@@ -420,7 +423,9 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     numberOfParts = (lutc-utc)/partLength
     # log("Number of parts: {}".format(numberOfParts))
     remainingSeconds = lengthSeconds-(numberOfParts*partLength)
-    xbmcgui.Dialog().notification("Downloading: {}".format(channelname), title, sound=True)
+    
+    xbmcgui.Dialog().notification("{}: {}".format(
+        addon.getLocalizedString(30053), channelname), title, sound=True)
     # Recording hour bits
     for part in range(0, numberOfParts): 
         cmd = [ffmpeg]
@@ -489,8 +494,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         video.close()
         os.remove(temp_file_path)
 
-    xbmcgui.Dialog().ok("Downloading completed",
-                        "{} from {} downloaded successfuly.".format(title, channelname))
+    xbmcgui.Dialog().ok(addon.getLocalizedString(30054),
+                        "{}: {} - {}".format(addon.getLocalizedString(30055), channelname, title))
 
     if do_refresh:
         refresh()
@@ -845,12 +850,16 @@ def xmltv():
 @plugin.route('/nuke')
 def nuke():
 
-    if not (xbmcgui.Dialog().yesno("IPTV Archive Downloader", get_string("Delete Everything and Start Again?"))):
+    if not (xbmcgui.Dialog().yesno("IPTV Archive Downloader", addon.getLocalizedString(30057))):
         return
 
     xbmcvfs.delete(xbmc.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')))
     time.sleep(5)
     full_service()
+
+@plugin.route('/settings')
+def settings():
+    xbmcaddon.Addon().openSettings()
 
 
 @plugin.route('/')
@@ -860,7 +869,7 @@ def index():
     
     items.append(
         {
-            'label': get_string("Recordings Folder"),
+            'label': addon.getLocalizedString(30058),
             'path': plugin.get_setting('recordings', str),
             'thumbnail': get_icon_path('recordings'),
             'context_menu': context_items,
@@ -868,9 +877,17 @@ def index():
 
     items.append(
         {
-            'label': get_string("Delete all settings"),
-            'path': plugin_url_for(plugin, 'nuke'),
+            'label': addon.getLocalizedString(30060),
+            'path': plugin_url_for(plugin, 'settings'),
             'thumbnail': get_icon_path('settings'),
+            'context_menu': context_items,
+        })
+
+    items.append(
+        {
+            'label': addon.getLocalizedString(30059),
+            'path': plugin_url_for(plugin, 'nuke'),
+            'thumbnail': get_icon_path('unknown'),
             'context_menu': context_items,
         })
     
