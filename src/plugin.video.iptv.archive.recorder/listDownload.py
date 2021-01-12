@@ -4,9 +4,10 @@ import locale
 import time
 from datetime import datetime
 from dateutil import parser
-from kodi_six import xbmc, xbmcgui
+from kodi_six import xbmc, xbmcgui, xbmcaddon
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:00"
+addon = xbmcaddon.Addon()
 
 def log(x):
     xbmc.log(repr(x), xbmc.LOGERROR)
@@ -49,14 +50,16 @@ def saneDate(fullDate):
 
 fullFormat = get_format()
 dialog = xbmcgui.Dialog()
-start_time = dialog.input('Enter start time', type=xbmcgui.INPUT_TIME)
-end_time = dialog.input('Enter end time', type=xbmcgui.INPUT_TIME)
+start_time = dialog.input(
+    addon.getLocalizedString(30065), type=xbmcgui.INPUT_TIME)
+end_time = dialog.input(addon.getLocalizedString(30066),
+                        type=xbmcgui.INPUT_TIME)
 
 channel = xbmc.getInfoLabel("ListItem.ChannelName")
 channel = channel.replace('+', '')
 title = 'Recording'
 
-yes_no = dialog.yesno('Confirm downloading','Your about to download {}\'s stream from {} to {}'.format(channel,start_time, end_time))
+yes_no = dialog.yesno(addon.getLocalizedString(30063), '{}: {} to {}'.format(addon.getLocalizedString(30064), start_time, end_time))
 
 if (yes_no == 1):
     try:
@@ -74,8 +77,8 @@ if (yes_no == 1):
             "ListItem.ChannelName"), xbmc.getInfoLabel("ListItem.Label"), start, stop)
         except:
             xbmcgui.Dialog().notification("IPTV Archive Downloader",
-                                      "Could not download recording", xbmcgui.NOTIFICATION_WARNING)
+                                          addon.getLocalizedString(30067), xbmcgui.NOTIFICATION_WARNING)
     except Exception as e:
         xbmcgui.Dialog().notification("IPTV Archive Downloader",
-                                  "Error parsing dates", xbmcgui.NOTIFICATION_ERROR)
+                                      addon.getLocalizedString(30068), xbmcgui.NOTIFICATION_ERROR)
         log("IPTV Archive Downloader: Error parsing dates ({})".format(e))
