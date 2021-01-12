@@ -114,7 +114,9 @@ try:
 
         message = "{}: {} ({} to {})'".format(xbmc.getInfoLabel("ListItem.ChannelName"), xbmc.getInfoLabel("ListItem.Label"), start, stop)
     except:
-        xbmcgui.Dialog().notification("IPTV Archive Downloader", "Could not download recording", xbmcgui.NOTIFICATION_WARNING)
+        xbmcgui.Dialog().notification("IPTV Archive Downloader",
+                                      addon.getLocalizedString(30067), xbmcgui.NOTIFICATION_WARNING)
 except Exception as e:
-    xbmcgui.Dialog().notification("IPTV Archive Downloader", "Error parsing dates", xbmcgui.NOTIFICATION_ERROR)
+    xbmcgui.Dialog().notification("IPTV Archive Downloader",
+                                  addon.getLocalizedString(30068), xbmcgui.NOTIFICATION_ERROR)
     log("IPTV Archive Downloader: Error parsing dates ({})".format(e))
