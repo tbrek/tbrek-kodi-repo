@@ -737,6 +737,18 @@ def xmltv():
             else:
                 path = ""
         elif mode == "1":
+            if x == "1":
+                try:
+                    m3uPathType = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPathType')
+                    if m3uPathType == "0":
+                        path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPath')
+                    else:
+                        path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uUrl')
+                except:
+                    path = ""
+            else:
+                path = ""
+        elif mode == "2":
             path = plugin.get_setting('external.m3u.file.'+x, str)
         else:
             path = plugin.get_setting('external.m3u.url.'+x, str)
