@@ -231,3 +231,7 @@ msgstr "Could not download recording"
 msgctxt "#30068"
 msgid "Error parsing dates"
 msgstr "Error parsing dates"
+
+msgctxt "#30069"
+msgid "PVR IPTV Archive Client"
+msgstr "PVR IPTV Archive Client"

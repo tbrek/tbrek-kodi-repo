@@ -231,3 +231,7 @@ msgstr "Pobieranie z archiwum nieudane"
 msgctxt "#30068"
 msgid "Error parsing dates"
 msgstr "Błąd przetwarzania daty"
+
+msgctxt "#30069"
+msgid "PVR IPTV Archive Client"
+msgstr "PVR IPTV Archive Client"
