@@ -13,7 +13,7 @@
     <setting id="artwork" label="30005" type="bool" default="true" />
 
     <setting type="sep"/>
-    <setting id="ffmpeg" label="30006" type="file" default="/"/>
+    <setting id="ffmpeg" label="30006" type="file" default=""/>
     <setting id="ffmpeg.reconnect" label="30007" type="bool" default="true"/>
     <setting id="ffmpeg.args" label="30008" type="text" default=""/>
     <setting id="ffmpeg.ext" label="30009" type="text" default="ts"/>
