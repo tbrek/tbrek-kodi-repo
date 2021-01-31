@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.iptv.archive.downloader" version="0.3.2" name="IPTV Archive Downloader" provider-name="tbrek">
   <requires>
-    <import addon="xbmc.python" version="3.3.0" />
+    <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.xbmcswift2"/>
     <import addon="script.module.requests"/>
     <import addon="script.module.chardet" />
