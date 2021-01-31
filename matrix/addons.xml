@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addons><addon id="plugin.video.iptv.archive.downloader" name="IPTV Archive Downloader" provider-name="tbrek" version="0.3.2">
+<addons><addon id="plugin.video.iptv.archive.downloader" name="IPTV Archive Downloader" provider-name="tbrek" version="0.3.3">
   <requires>
-    <import addon="xbmc.python" version="3.3.0" />
+    <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.xbmcswift2" />
     <import addon="script.module.requests" />
     <import addon="script.module.chardet" />
@@ -76,7 +76,7 @@ Initial version.
       <screenshot>resources/screenshots/screenshot-01.png</screenshot>
     </assets>
   </extension>
-</addon><addon id="repository.tbrek.tbrek-kodi-repo" name="tbrek/tbrek-kodi-repo Repository" provider-name="tbrek" version="1.0.1">
+</addon><addon id="repository.tbrek.tbrek-kodi-repo" name="tbrek/tbrek-kodi-repo Repository" provider-name="tbrek" version="1.0.2">
     <extension point="xbmc.addon.repository">
         
         <dir minversion="18.0.0">

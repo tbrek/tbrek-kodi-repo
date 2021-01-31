@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="repository.tbrek.tbrek-kodi-repo" name="tbrek/tbrek-kodi-repo Repository" version="1.0.1" provider-name="tbrek">
+<addon id="repository.tbrek.tbrek-kodi-repo" name="tbrek/tbrek-kodi-repo Repository" version="1.0.2" provider-name="tbrek">
     <extension point="xbmc.addon.repository">
         
         <dir minversion="18.0.0">
