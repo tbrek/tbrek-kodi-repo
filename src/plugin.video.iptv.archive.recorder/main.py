@@ -412,7 +412,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         f = xbmcvfs.File(json_path,'w')
         write_in_file(f, json_nfo)
         f.close()
-    
+
     # Make sure you're in the right timezone
     time_shift = int(plugin.get_setting('external.m3u.shift.1', str) or "0")
     utc = int(datetime2timestamp(local_starttime) - (3600 * time_shift ))
@@ -420,10 +420,10 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     lengthSeconds = lutc-utc
     partLength = int(plugin.get_setting('part.length', str) or "3600")
     # log("Part length: {}s".format(partLength))
-    numberOfParts = (lutc-utc)/partLength
+    numberOfParts = int(round((lutc-utc)/partLength))
     # log("Number of parts: {}".format(numberOfParts))
     remainingSeconds = lengthSeconds-(numberOfParts*partLength)
-    
+    # log("Remaining secods: {}".format(remainingSeconds))
     xbmcgui.Dialog().notification("{}: {}".format(
         addon.getLocalizedString(30053), channelname), title, sound=True)
     # Recording hour bits
