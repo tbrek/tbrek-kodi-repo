@@ -1,4 +1,4 @@
-# Almost "Instant" Kodi Addon Repository
+# Matrix version
 
 [![Travis](https://img.shields.io/travis/tbrek/tbrek-kodi-repo.svg?style=flat-square)](https://travis-ci.org/tbrek/tbrek-kodi-repo/)
 
