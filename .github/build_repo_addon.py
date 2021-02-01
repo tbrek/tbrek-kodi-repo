@@ -6,7 +6,7 @@ from shutil import copyfile
 
 
 DIR_INFO_TEMPLATE = '''
-        <dir minversion="{minversion}">
+        <dir maxversion="{maxversion}">
             <info compressed="false">{addon_url}</info>
             <checksum>{checksum_url}</checksum>
             <datadir zip="true">{datadir_url}</datadir>
@@ -80,7 +80,7 @@ def main():
         dir_info = ''
         for b in branches:
             dir_info = dir_info + DIR_INFO_TEMPLATE.format(
-                minversion=b['minversion'],
+                maxversion=b['maxversion'],
                 addon_url='https://{}.github.io/{}/{}/addons.xml'.format(
                     args.repo_user, args.repo_name, b['name']),
                 checksum_url='https://{}.github.io/{}/{}/addons.xml.md5'.format(
