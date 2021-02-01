@@ -74,11 +74,11 @@ def main():
                 if repo_addon_id == addon_id and not repo_addon_link:
                     repo_addon_link = plugin_zip_link
 
-            addons_text = addons_text + '\n\n[__{branchname}__]({branchlink}/addons.xml) (Kodi ver. {minversion}):' \
+            addons_text = addons_text + '\n\n[__{branchname}__]({branchlink}/addons.xml) (Kodi ver. {maxversion}):' \
                 '\n\n{branchaddons}'.format(
                     branchname=b['name'],
                     branchlink=b['name'],
-                    minversion=b['minversion'],
+                    maxversion=b['maxversion'],
                     branchaddons='\n'.join([
                             '- [__{nm}__]({link}) {id} v{ver}'.format(
                                 id=a.id, nm=a.name, link=a.zip, ver=a.version)
