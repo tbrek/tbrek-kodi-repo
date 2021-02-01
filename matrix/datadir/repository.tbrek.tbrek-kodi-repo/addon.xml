@@ -2,13 +2,13 @@
 <addon id="repository.tbrek.tbrek-kodi-repo" name="tbrek/tbrek-kodi-repo Repository" version="1.1.0" provider-name="tbrek">
     <extension point="xbmc.addon.repository">
         
-        <dir minversion="18.0.0">
+        <dir minversion="17.9.0">
             <info compressed="false">https://tbrek.github.io/tbrek-kodi-repo/leia/addons.xml</info>
             <checksum>https://tbrek.github.io/tbrek-kodi-repo/leia/addons.xml.md5</checksum>
             <datadir zip="true">https://tbrek.github.io/tbrek-kodi-repo/leia/datadir/</datadir>
         </dir>
 
-        <dir minversion="19.0.0">
+        <dir minversion="18.9.0">
             <info compressed="false">https://tbrek.github.io/tbrek-kodi-repo/matrix/addons.xml</info>
             <checksum>https://tbrek.github.io/tbrek-kodi-repo/matrix/addons.xml.md5</checksum>
             <datadir zip="true">https://tbrek.github.io/tbrek-kodi-repo/matrix/datadir/</datadir>
