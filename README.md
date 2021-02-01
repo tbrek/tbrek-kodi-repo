@@ -15,4 +15,4 @@ The following addons are available here:
 - [__tbrek/tbrek-kodi-repo Repository__](matrix/datadir/repository.tbrek.tbrek-kodi-repo/repository.tbrek.tbrek-kodi-repo-1.1.0.zip) repository.tbrek.tbrek-kodi-repo v1.1.0
 
 ----
-_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``9f879d3``](https://github.com/tbrek/tbrek-kodi-repo/commit/9f879d3433e20af2be4b671e1142353770cb57ca)
+_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``71f2d9b``](https://github.com/tbrek/tbrek-kodi-repo/commit/71f2d9be8e0703a4d66e89fcaef5b1bda38b2d4c)
