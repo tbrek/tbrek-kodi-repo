@@ -1,11 +1,11 @@
 {
     "branchmap": [{
             "name": "leia",
-            "minversion": "17.9.0"
+            "maxversion": "18.9.0"
         },
         {
             "name": "matrix",
-            "minversion": "18.9.0"
+            "minversion": "18.9.1"
 
         }
     ]
