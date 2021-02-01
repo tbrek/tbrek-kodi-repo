@@ -8,7 +8,7 @@
             <datadir zip="true">https://tbrek.github.io/tbrek-kodi-repo/leia/datadir/</datadir>
         </dir>
 
-        <dir minversion="18.9.9">
+        <dir minversion="19.0.0">
             <info compressed="false">https://tbrek.github.io/tbrek-kodi-repo/matrix/addons.xml</info>
             <checksum>https://tbrek.github.io/tbrek-kodi-repo/matrix/addons.xml.md5</checksum>
             <datadir zip="true">https://tbrek.github.io/tbrek-kodi-repo/matrix/datadir/</datadir>
