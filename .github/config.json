@@ -5,7 +5,7 @@
         },
         {
             "name": "matrix",
-            "minversion": "18.9.9"
+            "minversion": "19.0.0"
 
         }
     ]
