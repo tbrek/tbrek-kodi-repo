@@ -62,7 +62,7 @@ def main():
             )
             for addon in tree.getroot():
                 if not addon.tag == 'addon':
-                    continue
+                    break
                 addon_id = addon.get('id')
                 addon_nm = addon.get('name')
                 addon_ver = addon.get('version')
