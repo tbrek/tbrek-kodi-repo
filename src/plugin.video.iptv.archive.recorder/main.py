@@ -13,6 +13,7 @@ import glob
 import gzip
 import io
 import json
+import math
 import os, os.path
 import platform
 import random
@@ -420,7 +421,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     lengthSeconds = lutc-utc
     partLength = int(plugin.get_setting('part.length', str) or "3600")
     # log("Part length: {}s".format(partLength))
-    numberOfParts = int(round((lutc-utc)/partLength))
+    numberOfParts = math.floor((lutc-utc)/partLength)
     # log("Number of parts: {}".format(numberOfParts))
     remainingSeconds = lengthSeconds-(numberOfParts*partLength)
     # log("Remaining secods: {}".format(remainingSeconds))
