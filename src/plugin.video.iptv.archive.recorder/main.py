@@ -13,6 +13,7 @@ import glob
 import gzip
 import io
 import json
+import math
 import os, os.path
 import platform
 import random
@@ -99,7 +100,7 @@ def unescape( str ):
 #     xbmcvfs.rmdir(path)
 
 # def rmdirs(path):
-#     path = xbmc.translatePath(path)
+#     path = xbmcvfs.translatePath(path)
 #     dirs, files = xbmcvfs.listdir(path)
 #     for dir in dirs:
 #         rmdirs(os.path.join(path,dir))
@@ -107,7 +108,7 @@ def unescape( str ):
 
 
 # def find(path):
-#     path = xbmc.translatePath(path)
+#     path = xbmcvfs.translatePath(path)
 #     all_dirs = []
 #     all_files = []
 #     dirs, files = xbmcvfs.listdir(path)
@@ -136,7 +137,7 @@ def check_has_db_filled_show_error_message_ifn(db_cursor):
 
 @plugin.route('/play_channel/<channelname>')
 def play_channel(channelname):
-    conn = sqlite3.connect(xbmc.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')))
+    conn = sqlite3.connect(xbmcvfs.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')))
     c = conn.cursor()
     if not check_has_db_filled_show_error_message_ifn(c):
         return
@@ -158,7 +159,7 @@ def play_external(path):
     if args:
         cmd.append(args)
 
-    cmd.append(xbmc.translatePath(path))
+    cmd.append(xbmcvfs.translatePath(path))
 
     subprocess.Popen(cmd,shell=windows())
 
@@ -200,7 +201,7 @@ def android_get_current_appid():
 
 
 def ffmpeg_location():
-    ffmpeg_src = xbmc.translatePath(plugin.get_setting('ffmpeg', str))
+    ffmpeg_src = xbmcvfs.translatePath(plugin.get_setting('ffmpeg', str))
 
     if xbmc.getCondVisibility('system.platform.android'):
         ffmpeg_dst = '/data/data/%s/ffmpeg' % android_get_current_appid()
@@ -269,7 +270,7 @@ def write_in_file(file, string):
 
 def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, channelid=None, channelname=None, start=None,stop=None, play=False, title=None):
     #TODO check for ffmpeg process already recording if job is re-added  
-    conn = sqlite3.connect(xbmc.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')), detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+    conn = sqlite3.connect(xbmcvfs.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')), detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 
     cursor = conn.cursor()
     if not check_has_db_filled_show_error_message_ifn(cursor):
@@ -361,7 +362,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
                             addon.getLocalizedString(30051))
         return
 
-    kodi_recordings = xbmc.translatePath(plugin.get_setting('recordings', str))
+    kodi_recordings = xbmcvfs.translatePath(plugin.get_setting('recordings', str))
     ffmpeg_recordings = plugin.get_setting('ffmpeg.recordings', str) or kodi_recordings
     # if series:
     #     dir = os.path.join(kodi_recordings, "TV", folder)
@@ -420,7 +421,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     lengthSeconds = lutc-utc
     partLength = int(plugin.get_setting('part.length', str) or "3600")
     # log("Part length: {}s".format(partLength))
-    numberOfParts = int(round((lutc-utc)/partLength))
+    numberOfParts = math.floor((lutc-utc)/partLength)
     # log("Number of parts: {}".format(numberOfParts))
     remainingSeconds = lengthSeconds-(numberOfParts*partLength)
     # log("Remaining secods: {}".format(remainingSeconds))
@@ -545,7 +546,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
 def convert(path):
     input = xbmcvfs.File(path,'rb')
     output = xbmcvfs.File(path.replace('.ts','.mp4'),'wb')
-    error = open(xbmc.translatePath("special://profile/addon_data/plugin.video.iptv.archive.downloader/errors.txt"), "w", encoding='utf-8')
+    error = open(xbmcvfs.translatePath("special://profile/addon_data/plugin.video.iptv.archive.downloader/errors.txt"), "w", encoding='utf-8')
 
     cmd = [ffmpeg_location(),"-fflags","+genpts","-y","-i","-","-vcodec","copy","-acodec","copy","-f", "mpegts", "- >>"]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=error, shell=windows())
@@ -663,7 +664,7 @@ def full_service():
 
 @plugin.route('/service_thread')
 def service_thread():
-    conn = sqlite3.connect(xbmc.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')), detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+    conn = sqlite3.connect(xbmcvfs.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')), detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
     cursor = conn.cursor()
     if not check_has_db_filled_show_error_message_ifn(cursor):
         return
@@ -674,12 +675,12 @@ def find_files(root):
     dirs, files = xbmcvfs.listdir(root)
     found_files = []
     for dir in dirs:
-        path = os.path.join(xbmc.translatePath(root), dir)
+        path = os.path.join(xbmcvfs.translatePath(root), dir)
         found_files = found_files + find_files(path)
     file_list = []
     for file in files:
         if file.endswith('.' + plugin.get_setting('ffmpeg.ext', str)):
-            file = os.path.join(xbmc.translatePath(root), file)
+            file = os.path.join(xbmcvfs.translatePath(root), file)
             file_list.append(file)
     return found_files + file_list
 
@@ -715,7 +716,7 @@ def xmltv():
     dialog = xbmcgui.DialogProgressBG()
     dialog.create("IPTV Recorder", get_string("Loading data..."))
 
-    profilePath = xbmc.translatePath(plugin.addon.getAddonInfo('profile'))
+    profilePath = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
     xbmcvfs.mkdirs(profilePath)
 
     shifts = {}
@@ -758,7 +759,7 @@ def xmltv():
             m3uFile = 'special://profile/addon_data/plugin.video.iptv.archive.downloader/channels'+x+'.m3u'
 
             xbmcvfs.copy(path, m3uFile)
-            f = open(xbmc.translatePath(m3uFile),'rb')
+            f = open(xbmcvfs.translatePath(m3uFile),'rb')
             data = f.read()
             data = data.decode('utf8')
             settings_shift = float(plugin.get_setting('external.m3u.shift.'+x, str))
@@ -865,7 +866,7 @@ def nuke():
     if not (xbmcgui.Dialog().yesno("IPTV Archive Downloader", addon.getLocalizedString(30057))):
         return
 
-    xbmcvfs.delete(xbmc.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')))
+    xbmcvfs.delete(xbmcvfs.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')))
     time.sleep(5)
     full_service()
 
