@@ -71,20 +71,20 @@ def main():
                 addons.append(
                     Addon(addon_id, addon_nm, addon_ver, plugin_zip_link)
                 )
-                # if repo_addon_id == addon_id and not repo_addon_link:
-                #     repo_addon_link = plugin_zip_link
+                if repo_addon_id == addon_id and not repo_addon_link:
+                    repo_addon_link = plugin_zip_link
 
-            addons_text = addons_text + '\n\nKodi {maxversion} ([__{branchname}__]({branchlink}/addons.xml)):' \
-                '\n\n{branchaddons}'.format(
-                    branchname=b['name'],
-                    branchlink=b['name'],
-                    maxversion=b['maxversion'][:2],
-                    branchaddons='\n'.join([
-                            '- [__{nm}__]({link}) {id} v{ver}'.format(
-                                id=a.id, nm=a.name, link=a.zip, ver=a.version)
-                            for a in addons
-                        ])
-                )
+                addons_text = addons_text + '\n\nKodi {maxversion} ([__{branchname}__]({branchlink}/addons.xml)):' \
+                    '\n\n{branchaddons}'.format(
+                        branchname=b['name'],
+                        branchlink=b['name'],
+                        maxversion=b['maxversion'][:2],
+                        branchaddons='\n'.join([
+                                '- [__{nm}__]({link}) {id} v{ver}'.format(
+                                    id=a.id, nm=a.name, link=a.zip, ver=a.version)
+                                for a in addons
+                            ])
+                    )
 
         template_string = template_file.read()
         output_file.write(template_string.format(
