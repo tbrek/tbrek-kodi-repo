@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.iptv.archive.downloader" version="0.3.6" name="IPTV Archive Downloader" provider-name="tbrek">
+<addon id="plugin.video.iptv.archive.downloader" version="0.3.7" name="IPTV Archive Downloader" provider-name="tbrek">
   <requires>
     <import addon="xbmc.python" version="2.2.0" />
-    <import addon="script.module.xbmcswift2" version="2.4.0"/>
-    <import addon="script.module.requests" version="2.9.1"/>
+    <import addon="script.module.xbmcswift2" version="2.4.0" />
+    <import addon="script.module.requests" version="2.9.1" />
     <import addon="script.module.chardet" />
     <import addon="script.module.pytz" />
     <import addon="script.module.dateutil" />
@@ -51,15 +51,20 @@ niektórzy dostawcy IPTV przerywają transmisję z archiwum po 1h.
     <source>https://github.com/tbrek/IPTV-Archive-Downloader</source>
     <forum></forum>
     <news>
+version 0.3.7
+
+Custom archive format
+
+      
 version 0.3.5
 
 Bugfixes for Kodi 19.0.RC1
 
- 
+
 version 0.3.1
-
+     
 Added pvr.iptvarchive support
-
+      
       
 version 0.3.0
 
