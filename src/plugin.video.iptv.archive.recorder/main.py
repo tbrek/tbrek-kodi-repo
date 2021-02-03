@@ -423,7 +423,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     numberOfParts = (lutc-utc)/partLength
     # log("Number of parts: {}".format(numberOfParts))
     remainingSeconds = lengthSeconds-(numberOfParts*partLength)
-    # log("Remaining secods: {}".format(remainingSeconds))
+    # log("Remaining seconds: {}".format(remainingSeconds))
     xbmcgui.Dialog().notification("{}: {}".format(
         addon.getLocalizedString(30053), channelname), title, sound=True)
     # Recording hour bits
@@ -527,7 +527,6 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     for h in headers:
         cmd.append("-headers")
         cmd.append("%s:%s" % (h, headers[h]))
-    log(cmd)
     probe_cmd = cmd
     ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + plugin.get_setting('ffmpeg.ext', str))
     cmd = probe_cmd + ["-y", "-t", str(duration), "-fflags","+genpts","-vcodec","copy","-acodec","copy"]
