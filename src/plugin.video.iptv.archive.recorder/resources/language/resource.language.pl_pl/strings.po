@@ -235,3 +235,7 @@ msgstr "Błąd przetwarzania daty"
 msgctxt "#30069"
 msgid "PVR IPTV Archive Client"
 msgstr "PVR IPTV Archive Client"
+
+msgctxt "#30070"
+msgid "Archive format"
+msgid "Format archiwum"
