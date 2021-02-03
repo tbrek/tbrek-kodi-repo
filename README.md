@@ -9,8 +9,8 @@ Kodi 18 ([__leia__](leia/addons.xml)):
 
 Kodi 19 ([__matrix__](matrix/addons.xml)):
 
-- [__IPTV Archive Downloader__](matrix/datadir/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.3.7.zip) plugin.video.iptv.archive.downloader v0.3.7
+- [__IPTV Archive Downloader__](matrix/datadir/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.3.8.zip) plugin.video.iptv.archive.downloader v0.3.8
 - [__tbrek/tbrek-kodi-repo Repository__](matrix/datadir/repository.tbrek.tbrek-kodi-repo/repository.tbrek.tbrek-kodi-repo-1.1.0.zip) repository.tbrek.tbrek-kodi-repo v1.1.0
 
 ----
-_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``c7b3881``](https://github.com/tbrek/tbrek-kodi-repo/commit/c7b3881fd326b31007f326fbe26a25e7b2be5c40)
+_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``f2652c0``](https://github.com/tbrek/tbrek-kodi-repo/commit/f2652c0f47b5e93a01c7e6f6ba4bca92b7cfd4b4)
