@@ -518,15 +518,17 @@ def recordSegment(cmd, ffmpeg_recording_path):
 
 def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename, duration):
     cmd.append("-i")
-
+    # Load archive format
+    archive_format = plugin.get_setting('external.m3u.archive', str).format(start,stop)
     # Check if we are recording from archive
     if past_recording:
-        cmd.append(url+"?utc={}&lutc={}".format(start,stop))
+        cmd.append(url+"?"+archive_format)
     else:
         cmd.append(url)
     for h in headers:
         cmd.append("-headers")
         cmd.append("%s:%s" % (h, headers[h]))
+    log(cmd)
     probe_cmd = cmd
     ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + plugin.get_setting('ffmpeg.ext', str))
     cmd = probe_cmd + ["-y", "-t", str(duration), "-fflags","+genpts","-vcodec","copy","-acodec","copy"]
