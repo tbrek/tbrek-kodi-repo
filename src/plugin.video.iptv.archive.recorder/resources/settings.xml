@@ -37,7 +37,7 @@
     <setting id="external.m3u.file.1" label="30019" visible="eq(-1,2)" type="file" default=""/>
     <setting id="external.m3u.url.1" label="30020" visible="eq(-2,3)" type="text" default=""/>
     <setting id="external.m3u.shift.1" label="30021" type="slider" default="0" range="-12,1,12" option="int"/>
-    <setting id="external.m3u.archive" label="30070" type="text" default="&utc={}&lutc={}" />
+    <setting id="external.m3u.archive" label="30070" type="text" default="?utc={}&lutc={}" />
 </category>
 
 <category label="30023">
