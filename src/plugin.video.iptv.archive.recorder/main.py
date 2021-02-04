@@ -521,7 +521,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     archive_format = plugin.get_setting('external.m3u.archive', str).format(start,stop)
     # Check if we are recording from archive
     if past_recording:
-        cmd.append(url+"?"+archive_format)
+        cmd.append(url+archive_format)
     else:
         cmd.append(url)
     for h in headers:
