@@ -13,4 +13,4 @@ Kodi 19 ([__matrix__](matrix/addons.xml)):
 - [__tbrek/tbrek-kodi-repo Repository__](matrix/datadir/repository.tbrek.tbrek-kodi-repo/repository.tbrek.tbrek-kodi-repo-1.1.0.zip) repository.tbrek.tbrek-kodi-repo v1.1.0
 
 ----
-_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``634ed71``](https://github.com/tbrek/tbrek-kodi-repo/commit/634ed7188f546c3d502490520cb33cea88480d9b)
+_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``bb80579``](https://github.com/tbrek/tbrek-kodi-repo/commit/bb80579b2103870bbc17f8d2852e9c1805cc4ba8)
