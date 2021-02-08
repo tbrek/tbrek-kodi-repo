@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<addons><addon id="plugin.video.iptv.archive.downloader" name="IPTV Archive Downloader" provider-name="tbrek" version="0.3.10">
+<addons><addon id="plugin.video.iptv.archive.downloader" name="IPTV Archive Downloader" provider-name="tbrek" version="0.3.11">
   <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.xbmcswift2" />

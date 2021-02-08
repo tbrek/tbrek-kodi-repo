@@ -4,13 +4,13 @@ The following addons are available here:
 
 Kodi 18 ([__leia__](leia/addons.xml)):
 
-- [__IPTV Archive Downloader__](leia/datadir/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.3.10.zip) plugin.video.iptv.archive.downloader v0.3.10
+- [__IPTV Archive Downloader__](leia/datadir/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.3.11.zip) plugin.video.iptv.archive.downloader v0.3.11
 - [__tbrek/tbrek-kodi-repo Repository__](leia/datadir/repository.tbrek.tbrek-kodi-repo/repository.tbrek.tbrek-kodi-repo-1.1.0.zip) repository.tbrek.tbrek-kodi-repo v1.1.0
 
 Kodi 19 ([__matrix__](matrix/addons.xml)):
 
-- [__IPTV Archive Downloader__](matrix/datadir/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.3.10.zip) plugin.video.iptv.archive.downloader v0.3.10
+- [__IPTV Archive Downloader__](matrix/datadir/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.3.11.zip) plugin.video.iptv.archive.downloader v0.3.11
 - [__tbrek/tbrek-kodi-repo Repository__](matrix/datadir/repository.tbrek.tbrek-kodi-repo/repository.tbrek.tbrek-kodi-repo-1.1.0.zip) repository.tbrek.tbrek-kodi-repo v1.1.0
 
 ----
-_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``97e6327``](https://github.com/tbrek/tbrek-kodi-repo/commit/97e6327f45104a47d073ca90f54bd6f5beb61b55)
+_Generated with [instant-kodi-repo](https://github.com/ping/instant-kodi-repo/) from_ [``17a8040``](https://github.com/tbrek/tbrek-kodi-repo/commit/17a8040a07a89661afc77fa8e9f82d02cb5214e5)
