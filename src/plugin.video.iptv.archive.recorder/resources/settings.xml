@@ -25,7 +25,7 @@
     <setting id="minutes.before" label="30011" type="number" default="1"  />
     <setting id="minutes.after" label="30012" type="number" default="1"  />
     <setting id="part.length" label="30013" type="number" default="3600" />
-    <setting id="join.segments" label="30014" type="bool" deafult="false" />
+    <setting id="join.segments" label="30014" type="bool" deafult="true" />
 
     <setting type="sep"/>
     <setting id="silent" label="30015" type="bool" default="false"  />
