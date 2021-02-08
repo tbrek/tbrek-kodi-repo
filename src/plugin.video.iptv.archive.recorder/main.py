@@ -455,12 +455,13 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         # Concating fragments
         ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + plugin.get_setting('ffmpeg.ext', str))
         temp_file_path = os.path.join(ffmpeg_dir, filename + '-temp.' + plugin.get_setting('ffmpeg.ext', str))
-        tempFile = open(temp_file_path, "w")
+        tempFile = open(temp_file_path, "wb")
         for fileName in sorted(os.listdir(ffmpeg_dir)):
             if fileName.startswith(filename+"_") and fileName.endswith(".ts"):
                 # log("Joining: {}".format(fileName))
-                temp = open(ffmpeg_dir+"/"+fileName, "r")
-                tempFile.write(temp.read())
+                temp = open(ffmpeg_dir+"/"+fileName, "rb")
+                # tempFile.write(temp.read())
+                shutil.copyfileobj(temp, tempFile)
                 temp.close()
                 os.remove(ffmpeg_dir+"/"+fileName)
         tempFile.close()
