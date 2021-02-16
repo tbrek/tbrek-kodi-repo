@@ -70,9 +70,26 @@ elif episode != "":
 if episode_name != "":
     title += " - {}".format(episode_name)
 
-# xbmcgui.Dialog().ok("Channel: {}".format(channel),
-#                     "Title: {}".format(title),
-#                     "Genre: {}".format(genre))
+title = title.replace(" / \u2460+", "")
+title = title.replace(" / \u2461+", "")
+title = title.replace(" / \u2462+", "")
+title = title.replace(" / \u2463+", "")
+title = title.replace(" / \u2464+", "")
+title = title.replace(" / \u2465+", "")
+title = title.replace(" / \u2466+", "")
+title = title.replace(" / \u2467+", "")
+title = title.replace(" / \u2468+", "")
+title = title.replace(" / \u2469+", "")
+title = title.replace(" / \u246a+", "")
+title = title.replace(" / \u246b+", "")
+title = title.replace(" / \u246c+", "")
+title = title.replace(" / \u246d+", "")
+title = title.replace(" / \u246e+", "")
+title = title.replace(" / \u246f+", "")
+title = title.replace(" / \u2470+", "")
+title = title.replace(" / \u2471+", "")
+title = title.replace(" / \u2472+", "")
+title = title.replace(" / \u2473+", "")
 
 title = title.replace("%20", ' ')
 title = title.replace(",", " -")
