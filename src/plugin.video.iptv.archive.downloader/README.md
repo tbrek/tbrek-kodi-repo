@@ -1,7 +1,7 @@
 # IPTV Archive Downloader
 ## plugin.video.iptv.archive.downloader
 
-Kodi addon for downloading streams from the IPTV Simple Client archive
+Kodi addon for downloading streams from the IPTV Simple Client (Archive) archive
 
 This addon is an easily extensible python addon that should work with any device.
 
