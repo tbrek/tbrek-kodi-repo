@@ -64,16 +64,13 @@ if plugin.get_setting('multiline', str) == "true":
 else:
     CR = ""
 
-
 def get_icon_path(icon_name):
     return "special://home/addons/%s/resources/img/%s.png" % (addon_id(), icon_name)
-
 
 def remove_formatting(label):
     label = re.sub(r"\[/?[BI]\]", '', label, flags=re.I)
     label = re.sub(r"\[/?COLOR.*?\]", '', label, flags=re.I)
     return label
-
 
 def escape( str ):
     str = str.replace("&", "&amp;")
@@ -82,50 +79,12 @@ def escape( str ):
     str = str.replace("\"", "&quot;")
     return str
 
-
 def unescape( str ):
     str = str.replace("&lt;", "<")
     str = str.replace("&gt;", ">")
     str = str.replace("&quot;", "\"")
     str = str.replace("&amp;", "&")
     return str
-
-
-# def delete(path):
-#     dirs, files = xbmcvfs.listdir(path)
-#     for file in files:
-#         xbmcvfs.delete(path+file)
-#     for dir in dirs:
-#         delete(path + dir + '/')
-#     xbmcvfs.rmdir(path)
-
-# def rmdirs(path):
-#     path = xbmcvfs.translatePath(path)
-#     dirs, files = xbmcvfs.listdir(path)
-#     for dir in dirs:
-#         rmdirs(os.path.join(path,dir))
-#     xbmcvfs.rmdir(path)
-
-
-# def find(path):
-#     path = xbmcvfs.translatePath(path)
-#     all_dirs = []
-#     all_files = []
-#     dirs, files = xbmcvfs.listdir(path)
-#     for file in files:
-#         file_path = os.path.join(path,file)
-#         all_files.append(file_path)
-#     for dir in dirs:
-#         dir_path = os.path.join(path,dir)
-#         all_dirs.append(dir_path)
-#         new_dirs, new_files = find(os.path.join(path, dir))
-#         for new_dir in new_dirs:
-#             new_dir_path = os.path.join(path,dir,new_dir)
-#             all_dirs.append(new_dir_path)
-#         for new_file in new_files:
-#             new_file = os.path.join(path,dir,new_file)
-#             all_files.append(new_file)
-#     return all_dirs, all_files
 
 def check_has_db_filled_show_error_message_ifn(db_cursor):
     table_found = db_cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='streams'").fetchone()
@@ -149,7 +108,6 @@ def play_channel(channelname):
     url = channel[0]
     #plugin.set_resolved_url(url)
     xbmc.Player().play(url)
-
 
 @plugin.route('/play_external/<path>')
 def play_external(path):
@@ -330,8 +288,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     fchannelname = sane_name(channelname)
 
     folder = ""
-
-    folder = fchannelname
+    if (plugin.get_setting('subfolder', str) == 'true'):
+        folder = fchannelname
     if ftitle:
         filename = "%s - %s - %s" % (ftitle, fchannelname, local_starttime.strftime("%Y-%m-%d %H-%M"))
     else:
@@ -364,13 +322,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
 
     kodi_recordings = xbmcvfs.translatePath(plugin.get_setting('recordings', str))
     ffmpeg_recordings = plugin.get_setting('ffmpeg.recordings', str) or kodi_recordings
-    # if series:
-    #     dir = os.path.join(kodi_recordings, "TV", folder)
-    #     ffmpeg_dir = os.path.join(ffmpeg_recordings, "TV", folder)
-    # elif movie:
-    #     dir = os.path.join(kodi_recordings, "Movies", folder)
-    #     ffmpeg_dir = os.path.join(ffmpeg_recordings, "Movies", folder)
-    # else:
+
     dir = os.path.join(kodi_recordings, folder)
     ffmpeg_dir = os.path.join(ffmpeg_recordings, folder)
     xbmcvfs.mkdirs(dir)
@@ -520,12 +472,20 @@ def recordSegment(cmd, ffmpeg_recording_path):
 def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename, duration):
     cmd.append("-i")
     # Load archive format
-    archive_format = plugin.get_setting('external.m3u.archive', str).format(start,stop)
-    # Check if we are recording from archive
-    if past_recording:
-        cmd.append(url+archive_format)
-    else:
-        cmd.append(url)
+    archive_type = plugin.get_setting('external.m3u.archive', str)
+    log("Settings: {}".format(archive_type))
+
+    if (plugin.get_setting('external.m3u.archive', str) == "0"): # TeleEleVidenie
+        url=url+"?utc={}&lutc={}".format(start,stop)
+    if (plugin.get_setting('external.m3u.archive', str) == "1"): # PlusX.tv
+        url=url.replace("51.83.237.50", "54.36.168.131")
+        url=url.replace("video.m3u8", "video-{}-{}.m3u8".format(start, stop))
+    if (plugin.get_setting('external.m3u.archive', str) == "2"): # Custom
+        archive_format = plugin.get_setting('external.m3u.custom', str).format(start,stop)
+        url=url+archive_format
+   
+    cmd.append(url)
+ 
     for h in headers:
         cmd.append("-headers")
         cmd.append("%s:%s" % (h, headers[h]))
@@ -543,6 +503,8 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
         cmd = cmd + ['-f', 'mpegts','-']
     else:
         cmd.append(ffmpeg_recording_path)
+
+    log("Command: {}".format(cmd))
     return cmd, ffmpeg_recording_path
 
 @plugin.route('/convert/<path>')

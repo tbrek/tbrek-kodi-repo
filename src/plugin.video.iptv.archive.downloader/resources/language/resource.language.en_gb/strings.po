@@ -13,72 +13,72 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl_PL\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgctxt "#30000"
 msgid "Recording path"
-msgstr "Ścieżka nagrywania"
+msgstr "Recording path"
 
 msgctxt "#30001"
 msgid "Pipe ffmpeg output through Kodi (for network folders)"
-msgstr "Pozwól ffmpeg używać Kodi do zapisu (foldery sieciowe)"
+msgstr "Pipe ffmpeg output through Kodi (for network folders)"
 
 msgctxt "#30002"
 msgid "URL encode whole filename"
-msgstr "Zakoduj całą nazwę pliku"
+msgstr "URL encode whole filename"
 
 msgctxt "#30003"
 msgid "Create JSON file"
-msgstr "Utwórz plik JSON"
+msgstr "Create JSON file"
 
 msgctxt "#30004"
 msgid "Create NFO file"
-msgstr "Utwórz plik NFO"
+msgstr "Create NFO file"
 
 msgctxt "#30005"
 msgid "Create artwork file"
-msgstr "Utwórz plik z miniaturą"
+msgstr "Create artwork file"
 
 msgctxt "#30006"
 msgid "ffmpeg path"
-msgstr "Ścieżka do ffmpeg"
+msgstr "ffmpeg path"
 
 msgctxt "#30007"
 msgid "ffmpeg reconnect arguments"
-msgstr "Wznawiaj przerwane połączenie"
+msgstr "ffmpeg reconnect arguments"
 
 msgctxt "#30008"
 msgid "Optional extra ffmpeg arguments"
-msgstr "Opcje ffmpeg"
+msgstr "Optional extra ffmpeg arguments"
 
 msgctxt "#30009"
 msgid "ffmpeg file extension (ts is recommended)"
-msgstr "Rozszerzenie pliku ffmpeg (zalecane .ts)"
+msgstr "Rffmpeg file extension (ts is recommended)"
 
 msgctxt "#30010"
 msgid "Post-processing command "
-msgstr "Komenda do post-procesu"
+msgstr "Post-processing command "
 
 msgctxt "#30011"
 msgid "Minutes Before"
-msgstr "Minut przed"
+msgstr "Minutes Before"
 
 msgctxt "#30012"
 msgid "Minutes After"
-msgstr "Minut po"
+msgstr "Minutes After"
 
 msgctxt "#30013"
 msgid "Segment length (seconds)"
-msgstr "Długość segmentu (w sekundach)"
+msgstr "Segment length (seconds)"
 
 msgctxt "#30014"
 msgid "Join segments after downloading"
-msgstr "Połącz segmentu po probraniu"
+msgstr "Join segments after downloading"
 
 msgctxt "#30015"
 msgid "Silent Notifications"
-msgstr "Wycisz powiadomienia"
+msgstr "Silent Notifications"
 
 msgctxt "#30016"
 msgid "M3U"
@@ -86,51 +86,51 @@ msgstr "M3U"
 
 msgctxt "#30018"
 msgid "External m3u"
-msgstr "Plik M3U"
+msgstr "External m3u"
 
 msgctxt "#30019"
 msgid "Path to file"
-msgstr "Ścieżka do pliku"
+msgstr "Path to file"
 
 msgctxt "#30020"
 msgid "URL address"
-msgstr "Adres URL"
+msgstr "URL address"
 
 msgctxt "#30021"
 msgid "External m3u Time Shift (hours)"
-msgstr "Przeusnięcie czasowe (w godzinach)"
+msgstr "External m3u Time Shift (hours)"
 
 msgctxt "#30022"
 msgid "General"
-msgstr "Ogólne"
+msgstr "General"
 
 msgctxt "#30023"
 msgid "Service"
-msgstr "Zaawansowane"
+msgstr "Service"
 
 msgctxt "#30024"
 msgid "Startup Delay (seconds)"
-msgstr "Opóźnij start (w sekundach)"
+msgstr "Startup Delay (seconds)"
 
 msgctxt "#30025"
 msgid "Background Service"
-msgstr "Uruchom w tle"
+msgstr "Background Service"
 
 msgctxt "#30026"
 msgid "Update on Login"
-msgstr "Aktualizuj przy starcie"
+msgstr "Update on Login"
 
 msgctxt "#30027"
 msgid "Service Schedule Type"
-msgstr "Typ harmonogramu usług"
+msgstr "Service Schedule Type"
 
 msgctxt "#30028"
 msgid "Interval (hours)"
-msgstr "Interwał (w godzinach)"
+msgstr "Interval (hours)"
 
 msgctxt "#30029"
 msgid "Service Time"
-msgstr "Czas"
+msgstr "Service Time"
 
 msgctxt "#30031"
 msgid "IPTV Simple Client"
@@ -138,7 +138,7 @@ msgstr "IPTV Simple Client"
 
 msgctxt "#30032"
 msgid "File"
-msgstr "Plik"
+msgstr "File"
 
 msgctxt "#30033"
 msgid "URL"
@@ -146,91 +146,91 @@ msgstr "URL"
 
 msgctxt "#30034"
 msgid "Period"
-msgstr "Okresowo"
+msgstr "Period"
 
 msgctxt "#30035"
 msgid "Time"
-msgstr "Godzina"
+msgstr "Time"
 
 msgctxt "#30036"
 msgid "None"
-msgstr "Brak"
+msgstr "None"
 
 msgctxt "#30050"
 msgid "Can not download live stream"
-msgstr "Nie można pobrać transmisji na żywo"
+msgstr "Can not download live stream"
 
 msgctxt "#30051"
 msgid "Please try again when programme is finished"
-msgstr "Poczekaj do ukończenia programu"
+msgstr "Please try again when programme is finished"
 
 msgctxt "#30052"
 msgid "Database not found"
-msgstr "Baza danych nie odnaleziona"
+msgstr "Database not found"
 
 msgctxt "#30053"
 msgid "Downloading"
-msgstr "Pobieranie"
+msgstr "Downloading"
 
 msgctxt "#30054"
 msgid "Downloading completed"
-msgstr "Pobieranie zakoczończone"
+msgstr "Downloading completed"
 
 msgctxt "#30055"
 msgid "Downloaded"
-msgstr "Pobrano"
+msgstr "Downloaded"
 
 msgctxt "#30056"
 msgid "ffmpeg exe not found!"
-msgstr "Nie odnaleziono ffmpeg!"
+msgstr "ffmpeg exe not found!"
 
 msgctxt "#30057"
 msgid "Erase DB and start again?"
-msgstr "Wyczyść bazę danych i zacznij od nowa?"
+msgstr "Erase DB and start again?"
 
 msgctxt "#30058"
 msgid "Recordings Folder"
-msgstr "Nagrania"
+msgstr "Recordings Folder"
 
 msgctxt "#30059"
 msgid "Erase DB"
-msgstr "Wyczyść bazę danych"
+msgstr "Erase DB"
 
 msgctxt "#30060"
 msgid "Settings"
-msgstr "Ustawienia"
+msgstr "Settings"
 
 msgctxt "#30061"
 msgid "Download using timeframes"
-msgstr "Pobierz używając znaczników czasu"
+msgstr "Download using timeframes"
 
 msgctxt "#30062"
 msgid "Download from Archive"
-msgstr "Pobierz z archiwum"
+msgstr "Download from Archive"
 
 msgctxt "#30063"
 msgid "Confirm downloading"
-msgstr "Potwierdź pobieranie"
+msgstr "Confirm downloading"
 
 msgctxt "#30064"
 msgid "You are about to download stream"
-msgstr "Zamierzasz pobrać strumień w przedziale"
+msgstr "You are about to download stream"
 
 msgctxt "#30065"
 msgid "Enter start time"
-msgstr "Podaj start"
+msgstr "Enter start time"
 
 msgctxt "#30066"
 msgid "Enter end time"
-msgstr "Podaj koniec"
+msgstr "Enter end time"
 
 msgctxt "#30067"
 msgid "Could not download recording"
-msgstr "Pobieranie z archiwum nieudane"
+msgstr "Could not download recording"
 
 msgctxt "#30068"
 msgid "Error parsing dates"
-msgstr "Błąd przetwarzania daty"
+msgstr "Error parsing dates"
 
 msgctxt "#30069"
 msgid "PVR IPTV Archive Client"
@@ -238,4 +238,20 @@ msgstr "PVR IPTV Archive Client"
 
 msgctxt "#30070"
 msgid "Archive format"
-msgid "Format archiwum"
+msgstr "Archive format"
+
+msgctxt "#30071"
+msgid "Custom"
+msgstr "Custom"
+
+msgctxt "#30072"
+msgid "TeleEleVidenie"
+msgstr "TeleEleVidenie"
+
+msgctxt "#30073"
+msgid "PlusX.tv"
+msgstr "PlusX.tv"
+
+msgctxt "#30074"
+msgid "Create subfolder for each channel"
+msgstr "Create subfolder for each channel"
