@@ -64,16 +64,13 @@ if plugin.get_setting('multiline', str) == "true":
 else:
     CR = ""
 
-
 def get_icon_path(icon_name):
     return "special://home/addons/%s/resources/img/%s.png" % (addon_id(), icon_name)
-
 
 def remove_formatting(label):
     label = re.sub(r"\[/?[BI]\]", '', label, flags=re.I)
     label = re.sub(r"\[/?COLOR.*?\]", '', label, flags=re.I)
     return label
-
 
 def escape( str ):
     str = str.replace("&", "&amp;")
@@ -82,50 +79,12 @@ def escape( str ):
     str = str.replace("\"", "&quot;")
     return str
 
-
 def unescape( str ):
     str = str.replace("&lt;", "<")
     str = str.replace("&gt;", ">")
     str = str.replace("&quot;", "\"")
     str = str.replace("&amp;", "&")
     return str
-
-
-# def delete(path):
-#     dirs, files = xbmcvfs.listdir(path)
-#     for file in files:
-#         xbmcvfs.delete(path+file)
-#     for dir in dirs:
-#         delete(path + dir + '/')
-#     xbmcvfs.rmdir(path)
-
-# def rmdirs(path):
-#     path = xbmcvfs.translatePath(path)
-#     dirs, files = xbmcvfs.listdir(path)
-#     for dir in dirs:
-#         rmdirs(os.path.join(path,dir))
-#     xbmcvfs.rmdir(path)
-
-
-# def find(path):
-#     path = xbmcvfs.translatePath(path)
-#     all_dirs = []
-#     all_files = []
-#     dirs, files = xbmcvfs.listdir(path)
-#     for file in files:
-#         file_path = os.path.join(path,file)
-#         all_files.append(file_path)
-#     for dir in dirs:
-#         dir_path = os.path.join(path,dir)
-#         all_dirs.append(dir_path)
-#         new_dirs, new_files = find(os.path.join(path, dir))
-#         for new_dir in new_dirs:
-#             new_dir_path = os.path.join(path,dir,new_dir)
-#             all_dirs.append(new_dir_path)
-#         for new_file in new_files:
-#             new_file = os.path.join(path,dir,new_file)
-#             all_files.append(new_file)
-#     return all_dirs, all_files
 
 def check_has_db_filled_show_error_message_ifn(db_cursor):
     table_found = db_cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='streams'").fetchone()
@@ -149,7 +108,6 @@ def play_channel(channelname):
     url = channel[0]
     #plugin.set_resolved_url(url)
     xbmc.Player().play(url)
-
 
 @plugin.route('/play_external/<path>')
 def play_external(path):
@@ -891,7 +849,7 @@ def index():
         {
             'label': addon.getLocalizedString(30058),
             'path': plugin.get_setting('recordings', str),
-            'thumbnail': get_icon_path('recordings'),
+            'thumbnail': plugin.video.iptv.archive.recorder('recordings'),
             'context_menu': context_items,
         })
 
