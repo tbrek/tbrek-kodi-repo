@@ -18,4 +18,3 @@ branches:
   only:
     - matrix
     - leia
-    # Add more branches if required
