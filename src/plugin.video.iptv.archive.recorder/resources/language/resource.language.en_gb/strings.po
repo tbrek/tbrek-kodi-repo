@@ -238,4 +238,8 @@ msgstr "PVR IPTV Archive Client"
 
 msgctxt "#30070"
 msgid "Archive format"
-msgid "Archive format"
+msgstr "Archive format"
+
+msgctxt "#30071"
+msgid "Custom"
+msgstr "Custom"
