@@ -243,3 +243,15 @@ msgstr "Archive format"
 msgctxt "#30071"
 msgid "Custom"
 msgstr "Custom"
+
+msgctxt "#30072"
+msgid "TeleEleVidenie"
+msgstr "TeleEleVidenie"
+
+msgctxt "#30073"
+msgid "PlusX.tv"
+msgstr "PlusX.tv"
+
+msgctxt "#30074"
+msgid "Create subfolder for each channel"
+msgstr "Create subfolder for each channel"
