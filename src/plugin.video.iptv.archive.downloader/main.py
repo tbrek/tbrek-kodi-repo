@@ -849,7 +849,7 @@ def index():
         {
             'label': addon.getLocalizedString(30058),
             'path': plugin.get_setting('recordings', str),
-            'thumbnail': plugin.video.iptv.archive.downloader('recordings'),
+            'thumbnail': get_icon_path('recordings'),
             'context_menu': context_items,
         })
 
