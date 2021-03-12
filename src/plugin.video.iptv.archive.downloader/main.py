@@ -330,7 +330,9 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
 
     folder = ""
 
-    folder = fchannelname
+    if (plugin.get_setting('subfolder', str) == 'true'):
+        folder = fchannelname
+
     if ftitle:
         filename = "%s - %s - %s" % (ftitle, fchannelname, local_starttime.strftime("%Y-%m-%d %H-%M"))
     else:
@@ -363,13 +365,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
 
     kodi_recordings = xbmc.translatePath(plugin.get_setting('recordings', str))
     ffmpeg_recordings = plugin.get_setting('ffmpeg.recordings', str) or kodi_recordings
-    # if series:
-    #     dir = os.path.join(kodi_recordings, "TV", folder)
-    #     ffmpeg_dir = os.path.join(ffmpeg_recordings, "TV", folder)
-    # elif movie:
-    #     dir = os.path.join(kodi_recordings, "Movies", folder)
-    #     ffmpeg_dir = os.path.join(ffmpeg_recordings, "Movies", folder)
-    # else:
+
     dir = os.path.join(kodi_recordings, folder)
     ffmpeg_dir = os.path.join(ffmpeg_recordings, folder)
     xbmcvfs.mkdirs(dir)
@@ -518,13 +514,20 @@ def recordSegment(cmd, ffmpeg_recording_path):
 
 def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename, duration):
     cmd.append("-i")
-    # Load archive format
-    archive_format = plugin.get_setting('external.m3u.archive', str).format(start,stop)
-    # Check if we are recording from archive
-    if past_recording:
-        cmd.append(url+archive_format)
-    else:
-        cmd.append(url)
+
+    archive_type = plugin.get_setting('external.m3u.archive', str)
+    
+    if (plugin.get_setting('external.m3u.archive', str) == "0"): # TeleEleVidenie
+        url=url+"?utc={}&lutc={}".format(start,stop)
+    if (plugin.get_setting('external.m3u.archive', str) == "1"): # PlusX.tv
+        url=url.replace("51.83.237.50", "54.36.168.131")
+        url=url.replace("video.m3u8", "video-{}-{}.m3u8".format(start, stop))
+    if (plugin.get_setting('external.m3u.archive', str) == "2"): # Custom
+        archive_format = plugin.get_setting('external.m3u.custom', str).format(start,stop)
+        url=url+archive_format
+
+    cmd.append(url)
+
     for h in headers:
         cmd.append("-headers")
         cmd.append("%s:%s" % (h, headers[h]))
