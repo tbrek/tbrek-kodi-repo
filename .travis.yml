@@ -2,7 +2,7 @@ dist: trusty
 language: python
 
 python:
-  - "2.7"
+  - "3.0"
 
 env:
   global:
@@ -17,5 +17,5 @@ script:
 branches:
   only:
     - matrix
-    # - leia
+    - leia
     # Add more branches if required
