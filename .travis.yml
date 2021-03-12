@@ -17,5 +17,5 @@ script:
 branches:
   only:
     - matrix
-    - leia
+    # - leia
     # Add more branches if required
