@@ -57,6 +57,8 @@ end_time = dialog.input(addon.getLocalizedString(30066),
 
 channel = xbmc.getInfoLabel("ListItem.ChannelName")
 channel = channel.replace('+', '')
+channel = channel.replace("#", '')
+channel = channel.replace(":", '')
 title = 'Recording'
 
 yes_no = dialog.yesno(addon.getLocalizedString(30063), '{}: {} to {}'.format(addon.getLocalizedString(30064), start_time, end_time))
