@@ -747,6 +747,8 @@ def xmltv():
                 if ',' in re.sub('tvg-[a-z]+"[^"]*"','',channel[0], flags=re.I):
                     name = channel[0].rsplit(',', 1)[-1].strip()
                     name = name.replace('+','')
+                    name = name.replace(':','')
+                    name = name.replace('#','')
                     #name = name.encode("utf8")
 
                 tvg_name = re.search('tvg-name="(.*?)"', channel[0], flags=re.I)
