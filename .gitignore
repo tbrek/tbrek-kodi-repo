@@ -18,3 +18,4 @@ src/plugin.video.iptv.archive.recorder/resources/language/.DS_Store
 src/plugin.video.iptv.archive.recorder/resources/.DS_Store
 src/plugin.video.iptv.archive.recorder/resources/language/.DS_Store
 src/plugin.video.iptv.archive.recorder/.DS_Store
+.vscode/settings.json

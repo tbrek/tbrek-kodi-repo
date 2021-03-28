@@ -410,7 +410,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         f.close()
 
     # Make sure you're in the right timezone
-    time_shift = int(plugin.get_setting('external.m3u.shift.1', str) or "0")
+    time_shift = int(plugin.get_setting('external.m3u.shift', str) or "0")
     utc = int(datetime2timestamp(local_starttime) - (3600 * time_shift ))
     lutc = int(datetime2timestamp(local_endtime) - (3600 * time_shift ))
     lengthSeconds = lutc-utc
