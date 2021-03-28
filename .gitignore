@@ -18,3 +18,4 @@ src/plugin.video.iptv.archive.downloader/resources/language/.DS_Store
 src/plugin.video.iptv.archive.downloader/resources/.DS_Store
 src/plugin.video.iptv.archive.downloader/resources/language/.DS_Store
 src/plugin.video.iptv.archive.downloader/.DS_Store
+.vscode/settings.json
