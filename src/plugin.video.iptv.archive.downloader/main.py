@@ -397,7 +397,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     if plugin.get_setting('nfo', bool):
         plot = xbmc.getInfoLabel("ListItem.Plot")
         nfo_nfo = "Channel: {}\nTitle: {}\nStart: {} - End: {}\nPlot: {}".format(fchannelname,ftitle,start, stop, plot)
-        nfo_nfo += "\n\nDownloaed using IPTV Archive Downloader\nhttps://github.com/tbrek/IPTV-Archive-Downloader"
+        nfo_nfo += "\n\nDownloaded using IPTV Archive Downloader\nhttps://github.com/tbrek/IPTV-Archive-Downloader"
         f = xbmcvfs.File(nfo_path,'w')
         write_in_file(f,nfo_nfo)
         f.close()
