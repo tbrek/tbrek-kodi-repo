@@ -327,14 +327,21 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
 
     ftitle = sane_name(title)
     fchannelname = sane_name(channelname)
-
+    fepisode = ""
+    try:
+        fepisode = re.search(r'(S\d+E\d+)|(S\d+|E\d+)', xbmc.getInfoLabel("ListItem.Plot")).group(0)
+    except:
+        log("Not a series")
     folder = ""
 
     if (plugin.get_setting('subfolder', str) == 'true'):
         folder = fchannelname
 
     if ftitle:
-        filename = "%s - %s - %s" % (ftitle, fchannelname, local_starttime.strftime("%Y-%m-%d %H-%M"))
+        if fepisode:
+            filename = "%s - %s - %s - %s" % (ftitle, fepisode, fchannelname, local_starttime.strftime("%Y-%m-%d %H-%M"))
+        else:
+            filename = "%s - %s - %s" % (ftitle, fchannelname, local_starttime.strftime("%Y-%m-%d %H-%M"))
     else:
         filename = "%s - %s" % (fchannelname, local_starttime.strftime("%Y-%m-%d %H-%M"))
 
