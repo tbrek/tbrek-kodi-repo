@@ -50,10 +50,13 @@ def saneDate(fullDate):
 
 fullFormat = get_format()
 dialog = xbmcgui.Dialog()
+start_date = dialog.input("Start date", type=xbmcgui.INPUT_DATE)
 start_time = dialog.input(
     addon.getLocalizedString(30065), type=xbmcgui.INPUT_TIME)
+end_date = dialog.input("End date", type=xbmcgui.INPUT_DATE)
 end_time = dialog.input(addon.getLocalizedString(30066),
                         type=xbmcgui.INPUT_TIME)
+
 
 channel = xbmc.getInfoLabel("ListItem.ChannelName")
 channel = channel.replace('+', '')
@@ -61,12 +64,12 @@ channel = channel.replace("#", '')
 channel = channel.replace(":", '')
 title = 'Recording'
 
-yes_no = dialog.yesno(addon.getLocalizedString(30063), '{}: {} to {}'.format(addon.getLocalizedString(30064), start_time, end_time))
+yes_no = dialog.yesno(addon.getLocalizedString(30063), '{}: {} - {} to {} - {}'.format(addon.getLocalizedString(30064), start_date, start_time, end_date, end_time))
 
 if (yes_no == 1):
     try:
-        start = extract_date("ListItem.StartDate", start_time)
-        stop = extract_date("ListItem.EndDate", end_time)
+        start = extract_date(start_date, start_time)
+        stop = extract_date(end_date, end_time)
         log("Start: {}, End: {}".format(start, stop))
         try:
             cmd = "PlayMedia(plugin://plugin.video.iptv.archive.downloader/record_epg/%s/%s/%s/%s)" % (channel,
