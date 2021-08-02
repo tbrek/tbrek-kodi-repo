@@ -66,10 +66,14 @@ title = 'Recording'
 
 yes_no = dialog.yesno(addon.getLocalizedString(30063), '{}: {} - {} to {} - {}'.format(addon.getLocalizedString(30064), start_date, start_time, end_date, end_time))
 
+fullStartDate = "{}, {}".format(start_date, start_time)
+fullEndDate = "{}, {}".format(end_date, end_time)
+start = datetime.strftime(parser.parse(fullStartDate, dayfirst=True), DATE_FORMAT)
+stop = datetime.strftime(parser.parse(fullEndDate, dayfirst=True), DATE_FORMAT)
+
+
 if (yes_no == 1):
     try:
-        start = extract_date(start_date, start_time)
-        stop = extract_date(end_date, end_time)
         log("Start: {}, End: {}".format(start, stop))
         try:
             cmd = "PlayMedia(plugin://plugin.video.iptv.archive.downloader/record_epg/%s/%s/%s/%s)" % (channel,
