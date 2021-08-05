@@ -26,6 +26,7 @@ import subprocess
 import threading
 import time
 import unicodedata
+import uuid
 
 try:
     from urllib.parse import quote, quote_plus, unquote_plus
@@ -192,15 +193,52 @@ def ffmpeg_location():
 def debug_dialog(line2, line3, line4):
     xbmcgui.Dialog().ok("Debugging", line2, line3, line4)
 
+
+def add_to_queue(channel, name, start, stop):
+    kodi_recordings = xbmcvfs.translatePath(plugin.get_setting('recordings', str))
+    filename = str(uuid.uuid4())
+    dir = os.path.join(kodi_recordings)
+    xbmcvfs.mkdirs(dir)
+    path = os.path.join(dir, filename)
+    queue_file_path = path + '.queue'
+    queue_file = open(queue_file_path, 'w', encoding='utf-8')
+    queue_nfo = [f'{channel}\n', f'{name}\n',f'{start}\n',f'{stop}\n']
+    queue_file.writelines((queue_nfo))
+    queue_file.close()
+    manage_queue()
+
+def manage_queue():
+    if plugin.get_setting('recording.now', bool):
+        log('Recording...')
+    else:
+        kodi_recordings = xbmcvfs.translatePath(plugin.get_setting('recordings', str))
+
+        list_of_queue_files = glob.glob(kodi_recordings + "/*.queue")
+        queue_file_path = min(list_of_queue_files, key=os.path.getmtime)
+        queue_file = open(queue_file_path, 'r', encoding='utf-8')
+        log("Nagrywam: {}".format(queue_file))
+        queue_data = queue_file.read().splitlines()
+        channelname = queue_data[0]
+        name = queue_data[1]
+        start = get_utc_from_string(queue_data[2])
+        stop = get_utc_from_string(queue_data[3])
+        log("Nagrywam?: {}".format(plugin.get_setting('recording.now', bool)))
+        do_refresh = False
+        watch = False
+        remind = False
+        channelid = None
+        queue_file.close()
+        threading.Thread(target=record_once_thread,args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name, queue_file_path]).start()
+    
+
 @plugin.route('/record_epg/<channelname>/<name>/<start>/<stop>')
 def record_epg(channelname, name, start, stop):
     start = get_utc_from_string(start)
     stop = get_utc_from_string(stop)
-    do_refresh = False
-    watch = False
-    remind = False
-    channelid = None
-    threading.Thread(target=record_once_thread,args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name]).start()
+    add_to_queue(channelname, name, start, stop)
+    return
+
+# Redundant
 
 @plugin.route('/record_from_list/<channelname>/<start>/<stop>')
 def record_from_list(channelname, start, stop):
@@ -226,8 +264,10 @@ def get_utc_from_string(date_string):
 def write_in_file(file, string):
     file.write(bytearray(string.encode('utf8')))
 
-def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, channelid=None, channelname=None, start=None,stop=None, play=False, title=None):
-    #TODO check for ffmpeg process already recording if job is re-added  
+def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, channelid=None, channelname=None, start=None,stop=None, play=False, title=None, queue_file_path=None):
+    
+    plugin.set_setting('recording.now', 'true')
+
     conn = sqlite3.connect(xbmcvfs.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')), detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 
     cursor = conn.cursor()
@@ -342,7 +382,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     ffmpeg = ffmpeg_location()
     if not ffmpeg:
         return
-
+   
     # Get artwork
     if plugin.get_setting('artwork', bool):
         artwork_url = xbmc.getInfoLabel("ListItem.Icon")
@@ -392,8 +432,6 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         start=utc+(part*partLength)
         stop=start+partLength
         duration=partLength
-        # log("Recordind part: {}/{}. Start: {}. Stop: {}".format(part,numberOfParts,start,stop))
-        # log("Filename: {}_{}".format(filename,part))
         tempFilename = filename+"_"+"{}".format(part)
         cmd, ffmpeg_recording_path = getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, tempFilename, duration)
         # log("Command: {}".format(cmd))
@@ -403,8 +441,6 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         cmd = [ffmpeg]
         start = utc+(partLength * numberOfParts)
         stop = start + remainingSeconds
-        # log("Recording remaining seconds: {} from: {}".format(remainingSeconds, start))
-        # log("Filename: {}_{}".format(filename,numberOfParts))
         tempFilename = filename+"_"+"{}".format(numberOfParts)
         cmd, ffmpeg_recording_path = getCmd(start,stop, cmd, past_recording, url, headers, ffmpeg_dir, tempFilename, remainingSeconds)
         recordSegment(cmd, ffmpeg_recording_path)
@@ -425,9 +461,6 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
                 temp.close()
                 os.remove(ffmpeg_dir+"/"+fileName)
         tempFile.close()
-        # Fixing timestamps
-        # log("Fixing timestamps from: {}".format(temp_file_path))
-        # log("New file: {}".format(ffmpeg_recording_path))
         cmd = [ffmpeg]
         cmd.append("-i")
         cmd.append(temp_file_path)
@@ -454,9 +487,13 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
                 break
         video.close()
         os.remove(temp_file_path)
-
-    xbmcgui.Dialog().ok(addon.getLocalizedString(30054),
-                        "{}: {} - {}".format(addon.getLocalizedString(30055), channelname, title))
+        
+    plugin.set_setting('recording.now', 'false')
+    os.remove(str(queue_file_path))
+    xbmcgui.Dialog().notification("{}: {}".format(
+        addon.getLocalizedString(30054), channelname), title, sound=True)
+    
+    manage_queue()
 
     if do_refresh:
         refresh()

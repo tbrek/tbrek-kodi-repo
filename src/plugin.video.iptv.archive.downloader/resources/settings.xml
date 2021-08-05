@@ -51,10 +51,8 @@
     <setting id="service.time" type="time" label="30029" default="03:33" visible="eq(-4,true)+eq(-2,2)"/>
 </category>
 
-<!-- <category label="Debug" visible="false">
-    <setting id="debug" label="Debugging Menu Items" type="bool" default="false"  />
-	<setting type="lsep" label="NOTE: This will prevent recording. Only use it for debugging."/>
-    <setting id="debug.ffmpeg" label="Debug ffmpeg stdout/stderr" type="bool" default="false"  />
-</category> -->
+<category label="Debug" visible="true">
+    <setting id="recording.now" label="Is it recording" type="bool" default="false"  />
+</category>
 
 </settings>
