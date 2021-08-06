@@ -120,10 +120,16 @@ title = title.replace("\u017a", "z")
 title = title.replace("\u017b", "Z")
 title = title.replace("\u017c", "z")
 
+
+# start = extract_date("ListItem.StartDate", "ListItem.StartTime")
+# stop = extract_date("ListItem.EndDate", "ListItem.EndTime")
+# log("Start: {}".format(start))
+# log("Stop: {}".format(stop))
+    
+
 try:
     start = extract_date("ListItem.StartDate", "ListItem.StartTime")
-    stop = extract_date("ListItem.EndDate", "ListItem.EndTime")
-
+    stop = extract_date("ListItem.EndDate", "ListItem.EndTime") 
     try:
         cmd = "PlayMedia(plugin://plugin.video.iptv.archive.downloader/record_epg/%s/%s/%s/%s)" % (channel,
                                                                                         title,
