@@ -55,6 +55,7 @@ def log(v):
 addon = xbmcaddon.Addon()
 plugin = Plugin()
 big_list_view = True
+utc_offset = 0
 
 @encode_decode
 def plugin_url_for(plugin, *args, **kwargs):
@@ -205,6 +206,7 @@ def add_to_queue(channel, name, start, stop):
     queue_nfo = [f'{channel}\n', f'{name}\n',f'{start}\n',f'{stop}\n']
     queue_file.writelines((queue_nfo))
     queue_file.close()
+    log("Scheduled: {} - {}, {} - {}".format(channel, name, start, stop))
     manage_queue()
 
 def manage_queue():
@@ -212,49 +214,47 @@ def manage_queue():
         log('Recording...')
     else:
         kodi_recordings = xbmcvfs.translatePath(plugin.get_setting('recordings', str))
-
         list_of_queue_files = glob.glob(kodi_recordings + "/*.queue")
-        queue_file_path = min(list_of_queue_files, key=os.path.getmtime)
-        queue_file = open(queue_file_path, 'r', encoding='utf-8')
-        log("Nagrywam: {}".format(queue_file))
-        queue_data = queue_file.read().splitlines()
-        channelname = queue_data[0]
-        name = queue_data[1]
-        start = get_utc_from_string(queue_data[2])
-        stop = get_utc_from_string(queue_data[3])
-        log("Nagrywam?: {}".format(plugin.get_setting('recording.now', bool)))
-        do_refresh = False
-        watch = False
-        remind = False
-        channelid = None
-        queue_file.close()
-        threading.Thread(target=record_once_thread,args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name, queue_file_path]).start()
+        if list_of_queue_files:
+            queue_file_path = min(list_of_queue_files, key=os.path.getmtime)
+            queue_file = open(queue_file_path, 'r', encoding='utf-8')
+            queue_data = queue_file.read().splitlines()
+            channelname = queue_data[0]
+            name = queue_data[1]
+            start = get_utc_from_string(queue_data[2])
+            stop = get_utc_from_string(queue_data[3])
+            log("Start: {}".format(start))
+            log("Stop: {}".format(stop))
+            do_refresh = False
+            watch = False
+            remind = False
+            channelid = None
+            queue_file.close()
+            threading.Thread(target=record_once_thread,args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name, queue_file_path]).start()
     
 
 @plugin.route('/record_epg/<channelname>/<name>/<start>/<stop>')
 def record_epg(channelname, name, start, stop):
-    start = get_utc_from_string(start)
-    stop = get_utc_from_string(stop)
     add_to_queue(channelname, name, start, stop)
     return
 
 # Redundant
 
-@plugin.route('/record_from_list/<channelname>/<start>/<stop>')
-def record_from_list(channelname, start, stop):
-    start = get_utc_from_string(start)
-    stop = get_utc_from_string(stop)
-    watch = False
-    remind = False
-    channelid = None
-    threading.Thread(target=record_once_thread, args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name]).start()
+# @plugin.route('/record_from_list/<channelname>/<start>/<stop>')
+# def record_from_list(channelname, start, stop):
+#     start = get_utc_from_string(start)
+#     stop = get_utc_from_string(stop)
+#     watch = False
+#     remind = False
+#     channelid = None
+#     threading.Thread(target=record_once_thread, args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name]).start()
 
 
 def get_utc_from_string(date_string):
-    utcnow = datetime.utcnow()
+    utcnow = datetime.utcnow()    
     ts = time.time()
+    global utc_offset
     utc_offset = total_seconds(datetime.fromtimestamp(ts) - datetime.utcfromtimestamp(ts))
-
     r = re.search(r'(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):\d{2}', date_string)
     if r:
         year, month, day, hour, minute = r.group(1), r.group(2), r.group(3), r.group(4), r.group(5)
@@ -265,7 +265,7 @@ def write_in_file(file, string):
     file.write(bytearray(string.encode('utf8')))
 
 def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, channelid=None, channelname=None, start=None,stop=None, play=False, title=None, queue_file_path=None):
-    
+    log("Recording: {} - {}, {} - {}".format(channelname, title, start, stop))
     plugin.set_setting('recording.now', 'true')
 
     conn = sqlite3.connect(xbmcvfs.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')), detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
@@ -291,6 +291,12 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     
     local_starttime = utc2local(start)
     local_endtime = utc2local(stop)
+    log("Start: {}".format(start))
+    log("Stop: {}".format(stop))
+    log("Start local: {}".format(str(local_starttime)))
+    log("Stop local: {}".format(str(local_endtime)))
+    
+
 
     if channelid:
         channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_id=? AND tvg_name=?", (channelid, channelname)).fetchone()
@@ -400,7 +406,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     # Get and write info
     if plugin.get_setting('nfo', bool):
         plot = xbmc.getInfoLabel("ListItem.Plot")
-        nfo_nfo = "Channel: {}\nTitle: {}\nStart: {} - End: {}\nPlot: {}".format(fchannelname,ftitle,start, stop, plot)
+        nfo_nfo = "Channel: {}\nTitle: {}\nStart: {} - End: {}\nPlot: {}".format(fchannelname,ftitle,local_starttime, local_endtime, plot)
         nfo_nfo += "\n\nDownloaded using IPTV Archive Downloader\nhttps://github.com/tbrek/IPTV-Archive-Downloader"
         f = xbmcvfs.File(nfo_path,'w')
         write_in_file(f,nfo_nfo)
@@ -412,11 +418,15 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         f = xbmcvfs.File(json_path,'w')
         write_in_file(f, json_nfo)
         f.close()
-
-    # Make sure you're in the right timezone
     time_shift = int(plugin.get_setting('external.m3u.shift', str) or "0")
-    utc = int(datetime2timestamp(local_starttime) - (3600 * time_shift ))
-    lutc = int(datetime2timestamp(local_endtime) - (3600 * time_shift ))
+    utc = int(datetime2timestamp(start) + 3600 + 3600 * time_shift)
+    lutc = int(datetime2timestamp(stop) + 3600 + 3600 * time_shift)
+    # log("UTC_OFFSET: {}".format(utc_offset))
+    # log("Start: {}".format(start))
+    # log("Stop: {}".format(stop))
+    # log("UTC: {}".format(utc))
+    # log("LUTC: {}".format(lutc))
+    
     lengthSeconds = lutc-utc
     partLength = int(plugin.get_setting('part.length', str) or "3600")
     # log("Part length: {}s".format(partLength))
@@ -622,6 +632,7 @@ def datetime2timestamp(dt):
     epoch=datetime.fromtimestamp(0.0)
     td = dt - epoch
     return (td.microseconds + (td.seconds + td.days * 86400) * 10**6) / 10**6
+
 
 def timestamp2datetime(ts):
     return datetime.fromtimestamp(ts)
