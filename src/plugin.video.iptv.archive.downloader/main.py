@@ -5,6 +5,7 @@ from xbmcswift2 import Plugin, ListItem
 from collections import namedtuple
 from datetime import datetime, timedelta, tzinfo
 from language import get_string
+from language import get_string as _
 import base64
 import calendar
 import chardet
@@ -196,9 +197,10 @@ def debug_dialog(line2, line3, line4):
 
 
 def add_to_queue(channel, name, start, stop):
-    kodi_recordings = xbmcvfs.translatePath(plugin.get_setting('recordings', str))
-    filename = str(uuid.uuid4())
-    dir = os.path.join(kodi_recordings)
+    filename = str(channel + ' - ' + name + ' - ' + start + ' - ' + stop)
+    log(filename)
+    addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
+    dir = os.path.join(addon_data, 'queue')
     xbmcvfs.mkdirs(dir)
     path = os.path.join(dir, filename)
     queue_file_path = path + '.queue'
@@ -206,15 +208,15 @@ def add_to_queue(channel, name, start, stop):
     queue_nfo = [f'{channel}\n', f'{name}\n',f'{start}\n',f'{stop}\n']
     queue_file.writelines((queue_nfo))
     queue_file.close()
-    log("Scheduled: {} - {}, {} - {}".format(channel, name, start, stop))
     manage_queue()
 
 def manage_queue():
     if plugin.get_setting('recording.now', bool):
-        log('Recording...')
+        return
     else:
-        kodi_recordings = xbmcvfs.translatePath(plugin.get_setting('recordings', str))
-        list_of_queue_files = glob.glob(kodi_recordings + "/*.queue")
+        addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
+        dir = os.path.join(addon_data, 'queue')
+        list_of_queue_files = glob.glob(dir + "/*.queue")
         if list_of_queue_files:
             queue_file_path = min(list_of_queue_files, key=os.path.getmtime)
             queue_file = open(queue_file_path, 'r', encoding='utf-8')
@@ -223,21 +225,19 @@ def manage_queue():
             name = queue_data[1]
             start = get_utc_from_string(queue_data[2])
             stop = get_utc_from_string(queue_data[3])
-            log("Start: {}".format(start))
-            log("Stop: {}".format(stop))
             do_refresh = False
             watch = False
             remind = False
             channelid = None
             queue_file.close()
+            plugin.set_setting('current.queue', os.path.basename(queue_file_path))
             threading.Thread(target=record_once_thread,args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name, queue_file_path]).start()
     
 
 @plugin.route('/record_epg/<channelname>/<name>/<start>/<stop>')
 def record_epg(channelname, name, start, stop):
     add_to_queue(channelname, name, start, stop)
-    return
-
+    
 # Redundant
 
 # @plugin.route('/record_from_list/<channelname>/<start>/<stop>')
@@ -500,20 +500,19 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         
     plugin.set_setting('recording.now', 'false')
     os.remove(str(queue_file_path))
-    xbmcgui.Dialog().notification("{}: {}".format(
+    plugin.set_setting('current.queue', '')
+    xbmcgui.Dialog().notification('{}: {}'.format(
         addon.getLocalizedString(30054), channelname), title, sound=True)
     
     manage_queue()
-
-    if do_refresh:
-        refresh()
+    refresh()
 
 def recordSegment(cmd, ffmpeg_recording_path):
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
-    f = xbmcvfs.File(ffmpeg_recording_path, "w")
+    f = xbmcvfs.File(ffmpeg_recording_path, 'w')
     f.write(bytearray(repr(p.pid).encode('utf-8')))
     f.close()
-    video = xbmcvfs.File(ffmpeg_recording_path, "w")
+    video = xbmcvfs.File(ffmpeg_recording_path, 'w')
     # playing = False
     while True:
         data = p.stdout.read(1000000)
@@ -524,10 +523,10 @@ def recordSegment(cmd, ffmpeg_recording_path):
     video.close()
 
 def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename, duration):
-    cmd.append("-i")
+    cmd.append('-i')
     # Load archive format
     archive_type = plugin.get_setting('external.m3u.archive', str)
-    log("Settings: {}".format(archive_type))
+    log('Settings: {}'.format(archive_type))
 
     if (plugin.get_setting('external.m3u.archive', str) == "0"): # TeleEleVidenie
         url=url+"?utc={}&lutc={}".format(start,stop)
@@ -624,8 +623,9 @@ def sane_name(name):
 
 def refresh():
     containerAddonName = xbmc.getInfoLabel('Container.PluginName')
+    log(containerAddonName)
     AddonName = xbmcaddon.Addon().getAddonInfo('id')
-    if (containerAddonName == AddonName) and (plugin.get_setting('refresh', str) == 'true') :
+    if (containerAddonName == AddonName):
         xbmc.executebuiltin('Container.Refresh')
 
 def datetime2timestamp(dt):
@@ -897,11 +897,61 @@ def settings():
     xbmcaddon.Addon().openSettings()
 
 
+@plugin.route('/queue')
+def queue():
+    addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
+    queue_path = os.path.join(addon_data, 'queue')
+    list_of_queue_files = glob.glob(queue_path + "/*.queue")
+    items = []
+    if list_of_queue_files:
+        items.append({
+            'label': 'Delete all queued downloads',
+            'path': plugin.url_for('delete_all_from_queue'),
+            'thumbnail': get_icon_path('unknown'),
+            'context_menu': '',
+        })
+    for queue_item in list_of_queue_files:
+        context_items = []
+        context_items.append((addon.getLocalizedString(30077), 'RunPlugin(%s)' % (plugin.url_for(delete_from_queue, queue_item=os.path.basename(queue_item)))))
+        if plugin.get_setting('current.queue') == os.path.basename(queue_item):
+            icon = get_icon_path('queue')
+        else:
+            icon = get_icon_path('recordings')
+        items.append({
+            'label': os.path.basename(queue_item),
+            'path': plugin.url_for('queue'),
+            'thumbnail': icon,
+            'context_menu': context_items,
+        })
+    return items
+
+
+@plugin.route('/delete_all_from-queue')
+def delete_all_from_queue():
+    if not (xbmcgui.Dialog().yesno("IPTV Archive Downloader", addon.getLocalizedString(30078))):
+        return
+    addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
+    queue_path = os.path.join(addon_data, 'queue')
+    list_of_queue_files = glob.glob(queue_path + "/*.queue")
+    for queue_item in list_of_queue_files:
+        os.remove(queue_item)
+    refresh()
+
+
+@plugin.route('/delete_from_queue/<queue_item>')
+def delete_from_queue(queue_item):
+    if not (xbmcgui.Dialog().yesno("IPTV Archive Downloader", addon.getLocalizedString(30075))):
+        return
+    addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
+    queue_file_path = os.path.join(addon_data, 'queue', queue_item)
+    xbmcvfs.delete(queue_file_path)
+    refresh()
+
+
 @plugin.route('/')
 def index():
     items = []
     context_items = []
-    
     items.append(
         {
             'label': addon.getLocalizedString(30058),
@@ -926,6 +976,13 @@ def index():
             'context_menu': context_items,
         })
     
+    items.append(
+        {
+            'label': addon.getLocalizedString(30076),
+            'path': plugin_url_for(plugin, 'queue'),
+            'thumbnail': get_icon_path('queue'),
+            'context_menu': context_items,
+        })
     
     return items
 

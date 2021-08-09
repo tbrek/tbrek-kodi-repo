@@ -255,3 +255,19 @@ msgstr "PlusX.tv"
 msgctxt "#30074"
 msgid "Create subfolder for each channel"
 msgstr "Create subfolder for each channel"
+
+msgctxt "#30075"
+msgid "Delete scheduled download?"
+msgstr "Delete scheduled download?"
+
+msgctxt "#30076"
+msgid "Recording queue"
+msgstr "Recording queue"
+
+msgctxt "#30077"
+msgid "Delete"
+msgstr "Delete"
+
+msgctxt "#30078"
+msgid "Delete all queued downloads?"
+msgstr "Delete all queued downloads?"

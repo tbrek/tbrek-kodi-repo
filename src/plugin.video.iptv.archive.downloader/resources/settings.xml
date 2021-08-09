@@ -53,6 +53,7 @@
 
 <category label="Debug" visible="true">
     <setting id="recording.now" label="Is it recording" type="bool" default="false"  />
+    <setting id="current.queue" label="Current queue file" type="text" default="" />
 </category>
 
 </settings>

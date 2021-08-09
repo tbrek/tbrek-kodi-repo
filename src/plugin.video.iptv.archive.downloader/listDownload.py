@@ -27,25 +27,30 @@ def extract_date(dateLabel, timeLabel):
     return datetime.strftime(parsedDate, DATE_FORMAT)
 
 def saneDate(fullDate):
-    fullDate = fullDate.replace('Poniedzia\u0142ek', 'Monday')
-    fullDate = fullDate.replace("Wtorek", "Tuesday")
-    fullDate = fullDate.replace('\u015aroda', 'Wednesday')
-    fullDate = fullDate.replace('Czwartek', 'Thursday')
-    fullDate = fullDate.replace('Pi\u0105tek', 'Friday')
-    fullDate = fullDate.replace('Sobota', 'Saturday')
-    fullDate = fullDate.replace('Niedziela', 'Sunday')
-    fullDate = fullDate.replace('Stycznia', 'January')
-    fullDate = fullDate.replace('Lutego', 'February')
-    fullDate = fullDate.replace('Marca', 'March')
-    fullDate = fullDate.replace('Kwietnia', 'April')
-    fullDate = fullDate.replace('Maja', 'May')
-    fullDate = fullDate.replace('Czerwca', 'June')
-    fullDate = fullDate.replace('Lipca', 'July')
-    fullDate = fullDate.replace('Sierpnia', 'August')
-    fullDate = fullDate.replace('Wrze\u015bnia', 'September')
-    fullDate = fullDate.replace('Pa\u017adziernika', 'October')
-    fullDate = fullDate.replace('Listopada', 'November')
-    fullDate = fullDate.replace('Grudnia', 'December')
+    lookup_table = {
+        "stycznia": "January",                  "Stycznia": "January",
+        "lutego": "February",                   "Lutego": "February",
+        "marca": "Marzec",                      "Marca": "Marzec",
+        "kwietnia": "April",                    "Kwietnia": "April",
+        "maja": "May",                          "Maja": "May", 
+        "czerwca": "June",                      "Czerwca": "June",
+        "lipca": "July",                        "Lipca": "July", 
+        "sierpnia": "August",                   "Sierpnia": "August",
+        "wrze\u015bnia": "September",           "Wrze\u015bnia": "September",
+        "pa\u017cdziernika": "October",         "Pa\u017cdziernika": "October",
+        "listopada": "November",                "Listopada": "November",
+        "grudnia": "December",                  "Grudnia": "December",
+        "poniedzia\u0142ek" : "Monday",         "Poniedzia\u0142ek" : "Monday", 
+        "wtorek" : "Tuesday",                   "Wtorek" : "Tuesday",
+        "\u015aroda": "Wednesday",              "\u015broda": "Wednesday", 
+        "czwartek" : "Thursday",                "Czwartek" : "Thursday",
+        "pi\u0105tek" : "Friday",               "Pi\u0105tek" : "Friday", 
+        "sobota" : "Saturday",                  "Sobota" : "Saturday",
+        "niedziela" : "Sunday",                 "Niedziela" : "Sunday",
+    }
+
+    for k, v in lookup_table.items():
+        fullDate = fullDate.replace(k, v)
     return fullDate
 
 fullFormat = get_format()
