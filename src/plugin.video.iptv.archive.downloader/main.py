@@ -45,6 +45,7 @@ import uuid
 from kodi_six import xbmc, xbmcaddon, xbmcvfs, xbmcgui
 from kodi_six.utils import encode_decode
 
+
 def addon_id():
     return xbmcaddon.Addon().getAddonInfo('id')
 
@@ -198,6 +199,7 @@ def debug_dialog(line2, line3, line4):
 
 def add_to_queue(channel, name, start, stop):
     filename = str(channel + ' - ' + name + ' - ' + start + ' - ' + stop)
+    filename = sane_filename(filename)
     log(filename)
     addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
     dir = os.path.join(addon_data, 'queue')
@@ -209,6 +211,15 @@ def add_to_queue(channel, name, start, stop):
     queue_file.writelines((queue_nfo))
     queue_file.close()
     manage_queue()
+
+def sane_filename(filename):
+    filename = filename.replace(':','_')
+    filename = filename.replace('/','_')
+    filename = filename.replace('?','_')
+    filename = filename.replace('!','_')
+    filename = filename.replace('\\','_')
+    filename = filename.replace(' ','_')
+    return filename
 
 def manage_queue():
     if plugin.get_setting('recording.now', bool):
@@ -237,7 +248,6 @@ def manage_queue():
 @plugin.route('/record_epg/<channelname>/<name>/<start>/<stop>')
 def record_epg(channelname, name, start, stop):
     add_to_queue(channelname, name, start, stop)
-    
 # Redundant
 
 # @plugin.route('/record_from_list/<channelname>/<start>/<stop>')
@@ -351,8 +361,12 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     
     before = int(plugin.get_setting('minutes.before', str) or "0")
     after = int(plugin.get_setting('minutes.after', str) or "0")
+    log("Minutes before: {}".format(before))
+    log("Minutes after: {}".format(after))
     local_starttime = local_starttime - timedelta(minutes=before)
     local_endtime = local_endtime + timedelta(minutes=after)
+    log("Start local (delta): {}".format(local_starttime))
+    log("End local (delta):{}".format(local_endtime))
 
     now = datetime.now()   
     if (local_starttime < now) and (local_endtime > now):
@@ -419,8 +433,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         write_in_file(f, json_nfo)
         f.close()
     time_shift = int(plugin.get_setting('external.m3u.shift', str) or "0")
-    utc = int(datetime2timestamp(start) + 3600 + 3600 * time_shift)
-    lutc = int(datetime2timestamp(stop) + 3600 + 3600 * time_shift)
+    utc = int(datetime2timestamp(start) + 3600 + 3600 * time_shift - before * 60)
+    lutc = int(datetime2timestamp(stop) + 3600 + 3600 * time_shift + after * 60)
     # log("UTC_OFFSET: {}".format(utc_offset))
     # log("Start: {}".format(start))
     # log("Stop: {}".format(stop))
@@ -679,6 +693,7 @@ def service():
 @plugin.route('/full_service')
 def full_service():
     xmltv()
+    plugin.set_setting('recording.now', 'false')
     service_thread()
 
 
