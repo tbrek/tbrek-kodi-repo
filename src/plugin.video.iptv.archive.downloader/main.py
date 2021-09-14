@@ -798,105 +798,105 @@ def xmltv():
     shifts = {}
     streams_to_insert = []
 
-    for x in ["1","2"]:
-        dialog.update(0, message=get_string("Finding streams"))
-        mode = plugin.get_setting('external.m3u.'+x, str)
-        if mode == "0":
-            if x == "1":
-                try:
-                    m3uPathType = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPathType')
-                    if m3uPathType == "0":
-                        path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPath')
-                    else:
-                        path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uUrl')
-                except:
-                    path = ""
-            else:
+    
+    # log("--------------------------> Check m3u in: {}".format(plugin.get_setting('external.m3u', str)))
+    dialog.update(0, message=get_string("Finding streams"))
+    mode = plugin.get_setting('external.m3u', str)
+    if mode == "0":
+        if x == "1":
+            try:
+                m3uPathType = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPathType')
+                if m3uPathType == "0":
+                    path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPath')
+                else:
+                    path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uUrl')
+            except:
                 path = ""
-        elif mode == "1":
-            if x == "1":
-                try:
-                    m3uPathType = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPathType')
-                    if m3uPathType == "0":
-                        path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPath')
-                    else:
-                        path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uUrl')
-                except:
-                    path = ""
-            else:
-                path = ""
-        elif mode == "2":
-            path = plugin.get_setting('external.m3u.file.'+x, str)
         else:
-            path = plugin.get_setting('external.m3u.url.'+x, str)
+            path = ""
+    elif mode == "1":
+        if x == "1":
+            try:
+                m3uPathType = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPathType')
+                if m3uPathType == "0":
+                    path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPath')
+                else:
+                    path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uUrl')
+            except:
+                path = ""
+        else:
+            path = ""
+    elif mode == "2":
+        path = plugin.get_setting('external.m3u.file', str)
+    else:
+        path = plugin.get_setting('external.m3u.url', str)
 
-        if path:
+    if path:
+        m3uFile = 'special://profile/addon_data/plugin.video.iptv.archive.downloader/channels.m3u'
 
-            m3uFile = 'special://profile/addon_data/plugin.video.iptv.archive.downloader/channels'+x+'.m3u'
+        xbmcvfs.copy(path, m3uFile)
+        f = open(xbmcvfs.translatePath(m3uFile),'rb')
+        data = f.read()
+        data = data.decode('utf8')
+        settings_shift = float(plugin.get_setting('external.m3u.shift', str))
+        global_shift = settings_shift
 
-            xbmcvfs.copy(path, m3uFile)
-            f = open(xbmcvfs.translatePath(m3uFile),'rb')
-            data = f.read()
-            data = data.decode('utf8')
-            settings_shift = float(plugin.get_setting('external.m3u.shift.'+x, str))
-            global_shift = settings_shift
-
-            header = re.search('#EXTM3U(.*)', data)
-            if header:
-                tvg_shift = re.search('tvg-shift="(.*?)"', header.group(1))
+        header = re.search('#EXTM3U(.*)', data)
+        if header:
+            tvg_shift = re.search('tvg-shift="(.*?)"', header.group(1))
+            if tvg_shift:
+                tvg_shift = tvg_shift.group(1)
                 if tvg_shift:
-                    tvg_shift = tvg_shift.group(1)
-                    if tvg_shift:
-                        global_shift = float(tvg_shift) + settings_shift
+                    global_shift = float(tvg_shift) + settings_shift
 
-            channels = re.findall('#EXTINF:(.*?)(?:\r\n|\r|\n)(.*?)(?:\r\n|\r|\n|$)', data, flags=(re.I | re.DOTALL))
-            total = len(channels)
-            i = 0
-            for channel in channels:
+        channels = re.findall('#EXTINF:(.*?)(?:\r\n|\r|\n)(.*?)(?:\r\n|\r|\n|$)', data, flags=(re.I | re.DOTALL))
+        total = len(channels)
+        i = 0
+        for channel in channels:
 
-                name = None
-                if ',' in re.sub('tvg-[a-z]+"[^"]*"','',channel[0], flags=re.I):
-                    name = channel[0].rsplit(',', 1)[-1].strip()
-                    name = name.replace('+','')
-                    name = name.replace(':','')
-                    name = name.replace('#','')
-                    #name = name.encode("utf8")
+            name = None
+            if ',' in re.sub('tvg-[a-z]+"[^"]*"','',channel[0], flags=re.I):
+                name = channel[0].rsplit(',', 1)[-1].strip()
+                name = name.replace('+','')
+                name = name.replace(':','')
+                name = name.replace('#','')
+                #name = name.encode("utf8")
 
-                tvg_name = re.search('tvg-name="(.*?)"', channel[0], flags=re.I)
-                if tvg_name:
-                    tvg_name = tvg_name.group(1) or None
-                #else:
-                    #tvg_name = name
+            tvg_name = re.search('tvg-name="(.*?)"', channel[0], flags=re.I)
+            if tvg_name:
+                tvg_name = tvg_name.group(1) or None
+            #else:
+                #tvg_name = name
 
-                tvg_id = re.search('tvg-id="(.*?)"', channel[0], flags=re.I)
-                if tvg_id:
-                    tvg_id = tvg_id.group(1) or None
+            tvg_id = re.search('tvg-id="(.*?)"', channel[0], flags=re.I)
+            if tvg_id:
+                tvg_id = tvg_id.group(1) or None
 
-                tvg_logo = re.search('tvg-logo="(.*?)"', channel[0], flags=re.I)
-                if tvg_logo:
-                    tvg_logo = tvg_logo.group(1) or None
+            tvg_logo = re.search('tvg-logo="(.*?)"', channel[0], flags=re.I)
+            if tvg_logo:
+                tvg_logo = tvg_logo.group(1) or None
 
-                shifts[tvg_id] = global_shift
-                tvg_shift = re.search('tvg-shift="(.*?)"', channel[0], flags=re.I)
-                if tvg_shift:
-                    tvg_shift = tvg_shift.group(1)
-                    if tvg_shift and tvg_id:
-                        shifts[tvg_id] = float(tvg_shift) + settings_shift
+            shifts[tvg_id] = global_shift
+            tvg_shift = re.search('tvg-shift="(.*?)"', channel[0], flags=re.I)
+            if tvg_shift:
+                tvg_shift = tvg_shift.group(1)
+                if tvg_shift and tvg_id:
+                    shifts[tvg_id] = float(tvg_shift) + settings_shift
 
-                url = channel[1]
-                search = plugin.get_setting('m3u.regex.search', str)
-                replace = plugin.get_setting('m3u.regex.replace', str)
-                if search:
-                    url = re.sub(search, replace, url)
+            url = channel[1]
+            search = plugin.get_setting('m3u.regex.search', str)
+            replace = plugin.get_setting('m3u.regex.replace', str)
+            if search:
+                url = re.sub(search, replace, url)
 
-                groups = re.search('group-title="(.*?)"', channel[0], flags=re.I)
-                if groups:
-                    groups = groups.group(1) or None
+            groups = re.search('group-title="(.*?)"', channel[0], flags=re.I)
+            if groups:
+                groups = groups.group(1) or None
 
-                streams_to_insert.append((name, tvg_name, tvg_id, tvg_logo, groups, url.strip(), i))
-                i += 1
-                percent = 0 + int(100.0 * i / total)
-                dialog.update(percent, message=get_string("Finding streams"))
+            streams_to_insert.append((name, tvg_name, tvg_id, tvg_logo, groups, url.strip(), i))
+            i += 1
+            percent = 0 + int(100.0 * i / total)
+            dialog.update(percent, message=get_string("Finding streams"))
 
 
     '''
@@ -932,6 +932,7 @@ def xmltv():
     dialog.update(0, message=get_string("Updating database"))
     conn.executemany("INSERT OR IGNORE INTO streams(name, tvg_name, tvg_id, tvg_logo, groups, url, tv_number) VALUES (?, ?, ?, ?, ?, ?, ?)", streams_to_insert)
 
+    # ('TVP 1 FHD', None, 'TVP 1 3', 'https://tombrek.com/setup/tv/icons/tvp1.png', None, 'https://my.teleelevidenie.com/play/hls-apple-c468-t7958e3b2ddcc16298ec0629849d3fe7738506e11ebd7f34d22e4a1acee128514.m3u8', 0)
     conn.commit()
     conn.close()
 
