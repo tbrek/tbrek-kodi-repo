@@ -349,21 +349,23 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     local_endtime = stop
     channel = ''
 
-    if channelid:
-        channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_id=? AND tvg_name=?", (channelid, channelname)).fetchone()
-        if not channel:
-            channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_id=? AND name=?", (channelid, channelname)).fetchone()
-    else:
-        channel = cursor.execute("SELECT name, url FROM streams WHERE name=?", (channelname,)).fetchone()
-        if not channel:
-            channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_name=?", (channelname,)).fetchone()
+    # if channelid:
+    #     channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_id=? AND tvg_name=?", (channelid, channelname)).fetchone()
+    #     if not channel:
+    #         channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_id=? AND name=?", (channelid, channelname)).fetchone()
+    # else:
+    #     channel = cursor.execute("SELECT name, url FROM streams WHERE name=?", (channelname)).fetchone()
+    #     if not channel:
+    #         channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_name=?", (channelname)).fetchone()
     
+    channel = cursor.execute("SELECT name, url FROM streams WHERE name=? OR tvg_id=? OR tvg_name=?", (channelname, channelname, channelname)).fetchone()
+
     if not channel:
-        log("No channel {} {}".format(channelname, xbmc.LOGERROR))
+        log("--------------------------> No channel {} {}".format(channelname, xbmc.LOGERROR))
         return
     else:
-        log("Channel: {}".format(channelname))
-        
+        log("--------------------------> Channel: {}".format(channelname))
+        # return
     name, url = channel
     if not channelname:
         channelname = name
@@ -916,7 +918,9 @@ def xmltv():
     for _, _, tvg_id, _, groups, _, _ in streams_to_insert:
         if groups in load_groups:
             load_channels[tvg_id] = ""
-
+    log("-----------------------------------------Streams----------------------")
+    log(streams_to_insert)
+    log("-------------------------------------------End------------------------")
     dialog.update(0, message=get_string("Creating database"))
     databasePath = os.path.join(profilePath, 'xmltv.db')
     conn = sqlite3.connect(databasePath, detect_types=sqlite3.PARSE_DECLTYPES)
@@ -927,6 +931,7 @@ def xmltv():
   
     dialog.update(0, message=get_string("Updating database"))
     conn.executemany("INSERT OR IGNORE INTO streams(name, tvg_name, tvg_id, tvg_logo, groups, url, tv_number) VALUES (?, ?, ?, ?, ?, ?, ?)", streams_to_insert)
+
     conn.commit()
     conn.close()
 
