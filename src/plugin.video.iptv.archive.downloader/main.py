@@ -363,7 +363,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         return
     else:
         log("Channel: {}".format(channelname))
-        return
+        
     name, url = channel
     if not channelname:
         channelname = name
