@@ -9,6 +9,9 @@ import traceback
 
 servicing = False
 
+def log(v):
+    xbmc.log(repr(v), xbmc.LOGERROR)
+
 def Service():
     global servicing
     if servicing:
@@ -40,14 +43,15 @@ if __name__ == '__main__':
 
             if ADDON.getSetting('service.startup') == 'true' and not monitor.waitForAbort(int(ADDON.getSetting('service.delay.seconds'))):
                 Service()
-                ADDON.setSetting('last.update', str(time.time()))
+                ADDON.setSetting('last.update', str(datetime.now()))
 
             while not monitor.abortRequested():
 
                 timeLeft = 0
                 if ADDON.getSetting('service.type2') == '0':
                     interval = int(ADDON.getSetting('service.interval'))
-                    waitTime = 3600 * interval
+                    # waitTime = 3600 * interval
+                    waitTime = 1 * interval
                     ts = ADDON.getSetting('last.update') or "0.0"
                     lastTime = datetime.datetime.fromtimestamp(float(ts))
                     now = datetime.datetime.now()

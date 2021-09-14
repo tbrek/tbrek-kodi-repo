@@ -271,3 +271,11 @@ msgstr "Usuń?"
 msgctxt "#30078"
 msgid "Delete all queued downloads?"
 msgstr "Usunąć wszystkie zakolejkowane pobrania?"
+
+msgctxt "#30079"
+msgid "Scheduling"
+msgstr "Kolejkowanie"
+
+msgctxt "#30080"
+msgid "Found unfinished downloads. Would you like to restart?"
+msgstr "Znalezione niedokończone pobrania. Kontynuować?"

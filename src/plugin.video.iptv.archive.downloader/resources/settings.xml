@@ -52,8 +52,8 @@
 </category>
 
 <category label="Debug" visible="true">
-    <setting id="recording.now" label="Is it recording" type="bool" default="false"  />
     <setting id="current.queue" label="Current queue file" type="text" default="" />
+    <setting id="last.update" label="Last update" type="text" default="" />
 </category>
 
 </settings>

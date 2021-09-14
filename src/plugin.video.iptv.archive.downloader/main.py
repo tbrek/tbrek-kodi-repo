@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 
 from xbmcswift2 import Plugin, ListItem
 from collections import namedtuple
-from datetime import datetime, timedelta, tzinfo
+from datetime import date, datetime, timedelta, tzinfo
 from language import get_string
 from language import get_string as _
+from re import search
 import base64
 import calendar
 import chardet
@@ -51,7 +52,7 @@ def addon_id():
 
 
 def log(v):
-    xbmc.log(repr(v), xbmc.LOGERROR)
+    xbmc.log(repr(v), xbmc.LOGINFO)
 
 
 addon = xbmcaddon.Addon()
@@ -197,8 +198,8 @@ def debug_dialog(line2, line3, line4):
     xbmcgui.Dialog().ok("Debugging", line2, line3, line4)
 
 
-def add_to_queue(channel, name, start, stop):
-    filename = str(channel + ' - ' + name + ' - ' + start + ' - ' + stop)
+def add_to_queue(channelname, name, start, stop):
+    filename = str(stop + '-' + channelname + ' - ' + name + ' - ' + start + ' - ' + stop)
     filename = sane_filename(filename)
     log(filename)
     addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
@@ -207,9 +208,11 @@ def add_to_queue(channel, name, start, stop):
     path = os.path.join(dir, filename)
     queue_file_path = path + '.queue'
     queue_file = open(queue_file_path, 'w', encoding='utf-8')
-    queue_nfo = [f'{channel}\n', f'{name}\n',f'{start}\n',f'{stop}\n']
+    queue_nfo = [f'{channelname}\n', f'{name}\n',f'{start}\n',f'{stop}\n']
     queue_file.writelines((queue_nfo))
     queue_file.close()
+    xbmcgui.Dialog().notification("{}: {}".format(
+        addon.getLocalizedString(30079), channelname), name, sound=True)
     manage_queue()
 
 def sane_filename(filename):
@@ -221,29 +224,71 @@ def sane_filename(filename):
     filename = filename.replace(' ','_')
     return filename
 
+def log_queue():
+    log("-------------------- Queue -------------------")
+    addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
+    dir = os.path.join(addon_data, 'queue')
+    list_of_queue_files = sorted(glob.glob(dir + "/*.*"))
+    for count, queue_file_path in enumerate(list_of_queue_files):
+        queue_file_data = queue_item_details(queue_file_path)
+        log("{}. Channel: {} / Title: {} / Start: {} / Stop: {}".format(count + 1, queue_file_data[0], queue_file_data[1], queue_file_data[2], queue_file_data[3]))
+    log("---------------- End of queue ----------------")
+    return list_of_queue_files
+
+def queue_item_details(queue_file_path):
+    queue_file = open(queue_file_path, 'r', encoding='utf-8')
+    queue_data = queue_file.read().splitlines()
+    channelname = queue_data[0]
+    name = queue_data[1]
+    start = utc2local(get_utc_from_string(queue_data[2]))
+    stop = utc2local(get_utc_from_string(queue_data[3]))
+    queue_file.close()
+    return [channelname, name, start, stop]
+
+def check_queued_items():
+    list_of_queue_files = log_queue()
+    for queue_file in list_of_queue_files: 
+        log(queue_file)
+        if search('progress', queue_file):
+            if not (xbmcgui.Dialog().yesno("IPTV Archive Downloader", addon.getLocalizedString(30080))):
+                return
+            else:
+                os.rename(queue_file, os.path.splitext(queue_file)[0] + ".queue")
+                manage_queue()
+        
+
 def manage_queue():
-    if plugin.get_setting('recording.now', bool):
-        return
-    else:
-        addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
-        dir = os.path.join(addon_data, 'queue')
-        list_of_queue_files = glob.glob(dir + "/*.queue")
-        if list_of_queue_files:
-            queue_file_path = min(list_of_queue_files, key=os.path.getmtime)
-            queue_file = open(queue_file_path, 'r', encoding='utf-8')
-            queue_data = queue_file.read().splitlines()
-            channelname = queue_data[0]
-            name = queue_data[1]
-            start = get_utc_from_string(queue_data[2])
-            stop = get_utc_from_string(queue_data[3])
-            do_refresh = False
-            watch = False
-            remind = False
-            channelid = None
-            queue_file.close()
-            plugin.set_setting('current.queue', os.path.basename(queue_file_path))
-            threading.Thread(target=record_once_thread,args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name, queue_file_path]).start()
-    
+    queue_thread = threading.Timer(300,manage_queue)
+    list_of_queue_files = log_queue()
+    for queue_file in list_of_queue_files: 
+        log(queue_file)
+        if search('progress', queue_file):
+            log("Currently recording: {}".format(plugin.get_setting('current.queue')))
+            queue_thread.cancel()
+            return
+    queue_thread.start()
+            
+    if list_of_queue_files:
+        queue_file_data = queue_item_details(list_of_queue_files[0])
+        log("First queue item: {}".format(queue_file_data))
+        channelname = queue_file_data[0]
+        name = queue_file_data[1]
+        start = queue_file_data[2]
+        stop = queue_file_data[3]
+        after = int(plugin.get_setting('minutes.after', str) or "0")
+        local_endtime = stop + timedelta(minutes=after)
+        if local_endtime > datetime.now():
+            log("Waiting...")
+            return
+        do_refresh = False
+        watch = False
+        remind = False
+        channelid = None
+        queue_file_path = list_of_queue_files[0]
+        plugin.set_setting('current.queue', os.path.basename(queue_file_path))
+        queue_thread.cancel()
+        recording = threading.Thread(target=record_once_thread,args=[None, do_refresh, watch, remind, channelid, channelname, start, stop, False, name, queue_file_path])
+        recording.start()
 
 @plugin.route('/record_epg/<channelname>/<name>/<start>/<stop>')
 def record_epg(channelname, name, start, stop):
@@ -276,8 +321,9 @@ def write_in_file(file, string):
 
 def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, channelid=None, channelname=None, start=None,stop=None, play=False, title=None, queue_file_path=None):
     log("Recording: {} - {}, {} - {}".format(channelname, title, start, stop))
-    plugin.set_setting('recording.now', 'true')
-
+    new_queue_file_path = os.path.splitext(queue_file_path)[0] + ".progress"
+    os.rename(queue_file_path, new_queue_file_path)
+    plugin.set_setting('current.queue', os.path.basename(new_queue_file_path))
     conn = sqlite3.connect(xbmcvfs.translatePath('%sxmltv.db' % plugin.addon.getAddonInfo('profile')), detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 
     cursor = conn.cursor()
@@ -299,14 +345,9 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     if not start and not stop:
         return
     
-    local_starttime = utc2local(start)
-    local_endtime = utc2local(stop)
-    log("Start: {}".format(start))
-    log("Stop: {}".format(stop))
-    log("Start local: {}".format(str(local_starttime)))
-    log("Stop local: {}".format(str(local_endtime)))
-    
-
+    local_starttime = start
+    local_endtime = stop
+    channel = ''
 
     if channelid:
         channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_id=? AND tvg_name=?", (channelid, channelname)).fetchone()
@@ -316,11 +357,13 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         channel = cursor.execute("SELECT name, url FROM streams WHERE name=?", (channelname,)).fetchone()
         if not channel:
             channel = cursor.execute("SELECT name, url FROM streams WHERE tvg_name=?", (channelname,)).fetchone()
-
+    
     if not channel:
         log("No channel {} {}".format(channelname, xbmc.LOGERROR))
         return
-
+    else:
+        log("Channel: {}".format(channelname))
+        return
     name, url = channel
     if not channelname:
         channelname = name
@@ -361,13 +404,9 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     
     before = int(plugin.get_setting('minutes.before', str) or "0")
     after = int(plugin.get_setting('minutes.after', str) or "0")
-    log("Minutes before: {}".format(before))
-    log("Minutes after: {}".format(after))
     local_starttime = local_starttime - timedelta(minutes=before)
     local_endtime = local_endtime + timedelta(minutes=after)
-    log("Start local (delta): {}".format(local_starttime))
-    log("End local (delta):{}".format(local_endtime))
-
+  
     now = datetime.now()   
     if (local_starttime < now) and (local_endtime > now):
         local_starttime = now
@@ -433,8 +472,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         write_in_file(f, json_nfo)
         f.close()
     time_shift = int(plugin.get_setting('external.m3u.shift', str) or "0")
-    utc = int(datetime2timestamp(start) + 3600 + 3600 * time_shift - before * 60)
-    lutc = int(datetime2timestamp(stop) + 3600 + 3600 * time_shift + after * 60)
+    utc = int(datetime2timestamp(start)  + 3600 * time_shift - before * 60)
+    lutc = int(datetime2timestamp(stop)  + 3600 * time_shift + after * 60)
     # log("UTC_OFFSET: {}".format(utc_offset))
     # log("Start: {}".format(start))
     # log("Stop: {}".format(stop))
@@ -496,7 +535,6 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
             cmd = cmd + ['-f', 'mpegts', '-']
         else:
             cmd.append(ffmpeg_recording_path)
-        # log("Command: {}".format(cmd))
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
         f = xbmcvfs.File(ffmpeg_recording_path, "w")
         f.write(bytearray(repr(p.pid).encode('utf-8')))
@@ -512,14 +550,14 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         video.close()
         os.remove(temp_file_path)
         
-    plugin.set_setting('recording.now', 'false')
-    os.remove(str(queue_file_path))
+    os.remove(str(new_queue_file_path))
     plugin.set_setting('current.queue', '')
     xbmcgui.Dialog().notification('{}: {}'.format(
         addon.getLocalizedString(30054), channelname), title, sound=True)
     
-    manage_queue()
     refresh()
+    manage_queue()
+    
 
 def recordSegment(cmd, ffmpeg_recording_path):
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
@@ -692,8 +730,8 @@ def service():
 
 @plugin.route('/full_service')
 def full_service():
+    check_queued_items()
     xmltv()
-    plugin.set_setting('recording.now', 'false')
     service_thread()
 
 
@@ -703,8 +741,9 @@ def service_thread():
     cursor = conn.cursor()
     if not check_has_db_filled_show_error_message_ifn(cursor):
         return
-
     refresh()
+    manage_queue()
+
 
 def find_files(root):
     dirs, files = xbmcvfs.listdir(root)
@@ -916,7 +955,7 @@ def settings():
 def queue():
     addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
     queue_path = os.path.join(addon_data, 'queue')
-    list_of_queue_files = glob.glob(queue_path + "/*.queue")
+    list_of_queue_files = glob.glob(queue_path + "/*.*")
     items = []
     if list_of_queue_files:
         items.append({
@@ -947,9 +986,10 @@ def delete_all_from_queue():
         return
     addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
     queue_path = os.path.join(addon_data, 'queue')
-    list_of_queue_files = glob.glob(queue_path + "/*.queue")
+    list_of_queue_files = glob.glob(queue_path + "/*.*")
     for queue_item in list_of_queue_files:
         os.remove(queue_item)
+    plugin.set_setting('current.queue', '')
     refresh()
 
 
