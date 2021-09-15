@@ -803,28 +803,22 @@ def xmltv():
     dialog.update(0, message=get_string("Finding streams"))
     mode = plugin.get_setting('external.m3u', str)
     if mode == "0":
-        if x == "1":
-            try:
-                m3uPathType = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPathType')
-                if m3uPathType == "0":
-                    path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPath')
-                else:
-                    path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uUrl')
-            except:
-                path = ""
-        else:
+        try:
+            m3uPathType = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPathType')
+            if m3uPathType == "0":
+                path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPath')
+            else:
+                path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uUrl')
+        except:
             path = ""
     elif mode == "1":
-        if x == "1":
-            try:
-                m3uPathType = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPathType')
-                if m3uPathType == "0":
-                    path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPath')
-                else:
-                    path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uUrl')
-            except:
-                path = ""
-        else:
+        try:
+            m3uPathType = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPathType')
+            if m3uPathType == "0":
+                path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPath')
+            else:
+                path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uUrl')
+        except:
             path = ""
     elif mode == "2":
         path = plugin.get_setting('external.m3u.file', str)
