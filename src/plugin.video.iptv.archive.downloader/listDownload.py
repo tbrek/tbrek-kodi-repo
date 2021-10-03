@@ -37,7 +37,7 @@ def saneDate(fullDate):
         "lipca": "July",                        "Lipca": "July", 
         "sierpnia": "August",                   "Sierpnia": "August",
         "wrze\u015bnia": "September",           "Wrze\u015bnia": "September",
-        "pa\u017cdziernika": "October",         "Pa\u017cdziernika": "October",
+        "pa\u017adziernika": "October",         "Pa\u017adziernika": "October",
         "listopada": "November",                "Listopada": "November",
         "grudnia": "December",                  "Grudnia": "December",
         "poniedzia\u0142ek" : "Monday",         "Poniedzia\u0142ek" : "Monday", 

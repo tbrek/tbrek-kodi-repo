@@ -37,7 +37,7 @@ def saneDate(fullDate):
         "lipca": "July",                        "Lipca": "July", 
         "sierpnia": "August",                   "Sierpnia": "August",
         "wrze\u015bnia": "September",           "Wrze\u015bnia": "September",
-        "pa\u017cdziernika": "October",         "Pa\u017cdziernika": "October",
+        "pa\u017adziernika": "October",         "Pa\u017adziernika": "October",
         "listopada": "November",                "Listopada": "November",
         "grudnia": "December",                  "Grudnia": "December",
         "poniedzia\u0142ek" : "Monday",         "Poniedzia\u0142ek" : "Monday", 
@@ -124,7 +124,7 @@ title = title.replace("\u015b", "s")
 title = title.replace("\u0179", "Z")
 title = title.replace("\u017a", "z")
 title = title.replace("\u017b", "Z")
-title = title.replace("\u017c", "z")
+title = title.replace("\u017a", "z")
 
 
 # start = extract_date("ListItem.StartDate", "ListItem.StartTime")
