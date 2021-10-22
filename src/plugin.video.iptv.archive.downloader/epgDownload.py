@@ -122,7 +122,7 @@ title = title.replace("\u00f3", "o")
 title = title.replace("\u015a", "S")
 title = title.replace("\u015b", "s")
 title = title.replace("\u0179", "Z")
-title = title.replace("\u017a", "z")
+title = title.replace("\u017c", "z")
 title = title.replace("\u017b", "Z")
 title = title.replace("\u017a", "z")
 
