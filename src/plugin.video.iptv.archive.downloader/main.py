@@ -201,6 +201,7 @@ def debug_dialog(line2, line3, line4):
 def add_to_queue(channelname, name, start, stop):
     filename = str(stop + '-' + channelname + ' - ' + name + ' - ' + start + ' - ' + stop)
     filename = sane_filename(filename)
+    filename = filename[:50]
     log(filename)
     addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
     dir = os.path.join(addon_data, 'queue')
