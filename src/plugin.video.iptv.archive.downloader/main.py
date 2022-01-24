@@ -586,8 +586,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     if (plugin.get_setting('external.m3u.archive', str) == "0"): # TeleEleVidenie
         url=url+"?utc={}&lutc={}".format(start,stop)
     if (plugin.get_setting('external.m3u.archive', str) == "1"): # PlusX.tv
-        url=url.replace("51.83.237.50", "54.36.168.131")
-        url=url.replace("video.m3u8", "video-{}-{}.m3u8".format(start, stop))
+        url=url+"&utc={}&lutc={}".format(start,stop)
     if (plugin.get_setting('external.m3u.archive', str) == "2"): # Custom
         archive_format = plugin.get_setting('external.m3u.custom', str).format(start,stop)
         url=url+archive_format
