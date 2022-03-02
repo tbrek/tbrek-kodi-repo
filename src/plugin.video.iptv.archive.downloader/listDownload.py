@@ -30,7 +30,7 @@ def saneDate(fullDate):
     lookup_table = {
         "stycznia": "January",                  "Stycznia": "January",
         "lutego": "February",                   "Lutego": "February",
-        "marca": "Marzec",                      "Marca": "Marzec",
+        "marca": "March",                       "Marca": "March",
         "kwietnia": "April",                    "Kwietnia": "April",
         "maja": "May",                          "Maja": "May", 
         "czerwca": "June",                      "Czerwca": "June",
