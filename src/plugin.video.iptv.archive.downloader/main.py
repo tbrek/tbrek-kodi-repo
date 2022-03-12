@@ -59,6 +59,7 @@ addon = xbmcaddon.Addon()
 plugin = Plugin()
 big_list_view = True
 utc_offset = 0
+output_format = ''
 
 @encode_decode
 def plugin_url_for(plugin, *args, **kwargs):
@@ -439,7 +440,12 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     json_path = path + '.json'
     nfo_path = path + '.nfo'
     jpg_path = path + '.jpg'
-    path = path + '.' + plugin.get_setting('ffmpeg.ext', str)
+    if (plugin.get_setting('output.format') == "0"): # mkv
+        output_format="mkv"
+    if (plugin.get_setting('output.format') == "1"): # ts
+        output_format="ts"
+    path = path + '.' + output_format
+    log(path)
     path = path.replace("\\", "\\\\")
     ffmpeg = ffmpeg_location()
     if not ffmpeg:
@@ -515,11 +521,15 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     if plugin.get_setting('join.segments', bool):
                
         # Concating fragments
-        ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + plugin.get_setting('ffmpeg.ext', str))
-        temp_file_path = os.path.join(ffmpeg_dir, filename + '-temp.' + plugin.get_setting('ffmpeg.ext', str))
+        if (plugin.get_setting('output.format') == "0"): # mkv
+            output_format="mkv"
+        if (plugin.get_setting('output.format') == "1"): # ts
+            output_format="ts"
+        ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + output_format)
+        temp_file_path = os.path.join(ffmpeg_dir, filename + '-temp.' + output_format)
         tempFile = open(temp_file_path, "wb")
         for fileName in sorted(os.listdir(ffmpeg_dir)):
-            if fileName.startswith(filename+"_") and fileName.endswith(".ts"):
+            if fileName.startswith(filename+"_") and fileName.endswith(output_format):
                 # log("Joining: {}".format(fileName))
                 temp = open(ffmpeg_dir+"/"+fileName, "rb")
                 # tempFile.write(temp.read())
@@ -533,7 +543,8 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         probe_cmd = cmd
         cmd = probe_cmd + \
             ["-fflags", "+genpts",
-             "-vcodec", "copy", "-acodec", "copy"]
+             "-c:v", "copy", "-c:a", "copy", "-map","0" ]
+             
         if (plugin.get_setting('ffmpeg.pipe', str) == 'true') and not (windows() and (plugin.get_setting('task.scheduler', str) == 'true')):
             cmd = cmd + ['-f', 'mpegts', '-']
         else:
@@ -544,6 +555,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         f.close()
         video = xbmcvfs.File(ffmpeg_recording_path, "w")
         # playing = False
+        log("CMD: {}".format(cmd))
         while True:
             data = p.stdout.read(1000000)
             if data:
@@ -583,6 +595,10 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     archive_type = plugin.get_setting('external.m3u.archive', str)
     log('Settings: {}'.format(archive_type))
 
+    if (plugin.get_setting('output.format') == "0"): # mkv
+        output_format="mkv"
+    if (plugin.get_setting('output.format') == "1"): # ts
+        output_format="ts"
     if (plugin.get_setting('external.m3u.archive', str) == "0"): # TeleEleVidenie
         url=url+"?utc={}&lutc={}".format(start,stop)
     if (plugin.get_setting('external.m3u.archive', str) == "1"): # PlusX.tv
@@ -598,8 +614,10 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
         cmd.append("%s:%s" % (h, headers[h]))
     log(cmd)
     probe_cmd = cmd
-    ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + plugin.get_setting('ffmpeg.ext', str))
-    cmd = probe_cmd + ["-y", "-t", str(duration), "-fflags","+genpts","-vcodec","copy","-acodec","copy"]
+    ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + output_format)
+    cmd = probe_cmd + ["-y", "-t", str(duration), "-fflags","+genpts","-c:v","copy","-c:a","copy"]
+    if plugin.get_setting('audio.tracks', bool):
+        cmd = cmd + ['-map','0']
     ffmpeg_reconnect = plugin.get_setting('ffmpeg.reconnect', bool)
     if ffmpeg_reconnect:
         cmd = cmd + ["-reconnect_at_eof", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "300"]
@@ -610,6 +628,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
         cmd = cmd + ['-f', 'mpegts','-']
     else:
         cmd.append(ffmpeg_recording_path)
+    
 
     log("Command: {}".format(cmd))
     return cmd, ffmpeg_recording_path
@@ -748,6 +767,10 @@ def service_thread():
 
 
 def find_files(root):
+    if (plugin.get_setting('output.format') == "0"): # mkv
+        output_format="mkv"
+    if (plugin.get_setting('output.format') == "1"): # ts
+        output_format="ts"
     dirs, files = xbmcvfs.listdir(root)
     found_files = []
     for dir in dirs:
@@ -755,7 +778,7 @@ def find_files(root):
         found_files = found_files + find_files(path)
     file_list = []
     for file in files:
-        if file.endswith('.' + plugin.get_setting('ffmpeg.ext', str)):
+        if file.endswith('.' + output_format):
             file = os.path.join(xbmcvfs.translatePath(root), file)
             file_list.append(file)
     return found_files + file_list

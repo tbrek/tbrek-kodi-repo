@@ -278,4 +278,12 @@ msgstr "Scheduling"
 
 msgctxt "#30080"
 msgid "Found unfinished downloads. Would you like to restart?"
-msgstr "Znalezione niedokończone pobrania. Kontynuować?"
+msgstr "Found unfinished downloads. Would you like to restart?"
+
+msgctxt "#30081"
+msgid "Download all audio tracks"
+msgstr "Download all audio tracks"
+
+msgctxt "#30082"
+msgid "Output file format"
+msgstr "Output file format"

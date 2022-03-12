@@ -2,29 +2,31 @@
 
 <category label="30022">
     <setting type="sep"/>
-    <setting id="recordings" label="30000" type="folder" option="writeable" default="special://temp"/>
-    <setting id="ffmpeg.pipe" label="30001" type="bool" default="true"/>
-    <setting id="ffmpeg.recordings" label="ffmpeg Recordings Folder (if different than Kodi path)" type="text" default="" visible="eq(-1,false)"/>
+    <setting id="recordings" label="30000" type="folder" option="writeable" default="special://temp" />
+    <setting id="ffmpeg.pipe" label="30001" type="bool" default="true" />
+    <setting id="ffmpeg.recordings" label="ffmpeg Recordings Folder (if different than Kodi path)" type="text" default="" visible="eq(-1,false)" />
 
     <setting type="sep"/>
-    <setting id="filename.urlencode" label="30002" type="bool" default="false" visible="false"/>
+    <setting id="filename.urlencode" label="30002" type="bool" default="false" visible="false" />
     <setting id="subfolder" label="30074" type="bool" default="true" />
     <setting id="json" label="30003" type="bool" default="true" />
     <setting id="nfo" label="30004" type="bool" default="true" />
     <setting id="artwork" label="30005" type="bool" default="true" />
+    <setting id="audio.tracks" label="30081" type="bool" default="false" />
+    <setting id="output.format" label="30082" type="enum" default="ts" values="mkv|ts" />
 
     <setting type="sep"/>
     <setting id="ffmpeg" label="30006" type="file" default=""/>
     <setting id="ffmpeg.reconnect" label="30007" type="bool" default="true"/>
     <setting id="ffmpeg.args" label="30008" type="text" default=""/>
-    <setting id="ffmpeg.ext" label="30009" type="text" default="ts"/>
+    <!-- <setting id="ffmpeg.ext" label="30009" type="text" default="ts"/> -->
 
     <!-- <setting type="lsep" label="($p full path, $d recording directory, $f base filename)" visible="false"/> -->
     <setting id="post.command" label="30010" type="text" default=""/>
 
     <setting type="sep"/>
-    <setting id="minutes.before" label="30011" type="number" default="1"  />
-    <setting id="minutes.after" label="30012" type="number" default="1"  />
+    <setting id="minutes.before" label="30011" type="number" default="1" />
+    <setting id="minutes.after" label="30012" type="number" default="1" />
     <setting id="part.length" label="30013" type="number" default="3600" />
     <setting id="join.segments" label="30014" type="bool" deafult="true" />
 

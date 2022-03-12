@@ -279,3 +279,11 @@ msgstr "Kolejkowanie"
 msgctxt "#30080"
 msgid "Found unfinished downloads. Would you like to restart?"
 msgstr "Znalezione niedokończone pobrania. Kontynuować?"
+
+msgctxt "#30081"
+msgid "Download all audio tracks"
+msgstr "Pobierz wszystkie ścieżki audio"
+
+msgctxt "#30082"
+msgid "Output file format"
+msgstr "Format wyjściowy pliku"
