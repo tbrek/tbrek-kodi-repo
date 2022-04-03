@@ -13,7 +13,7 @@
     <setting id="nfo" label="30004" type="bool" default="true" />
     <setting id="artwork" label="30005" type="bool" default="true" />
     <setting id="audio.tracks" label="30081" type="bool" default="false" />
-    <setting id="output.format" label="30082" type="enum" default="ts" values="mkv|ts" />
+    <setting id="output.format" label="30082" type="enum" default="ts" values="ts|mp4|mkv" />
 
     <setting type="sep"/>
     <setting id="ffmpeg" label="30006" type="file" default=""/>

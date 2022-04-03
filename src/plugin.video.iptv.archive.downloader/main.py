@@ -440,11 +440,11 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     json_path = path + '.json'
     nfo_path = path + '.nfo'
     jpg_path = path + '.jpg'
-    if (plugin.get_setting('output.format') == "0"): # mkv
-        output_format="mkv"
-    if (plugin.get_setting('output.format') == "1"): # ts
-        output_format="ts"
-    path = path + '.' + output_format
+    # if (plugin.get_setting('output.format') == "0"): # mkv
+    #     output_format="mkv"
+    # if (plugin.get_setting('output.format') == "1"): # ts
+    #     output_format="ts"
+    path = path + '.ts'
     log(path)
     path = path.replace("\\", "\\\\")
     ffmpeg = ffmpeg_location()
@@ -521,15 +521,20 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     if plugin.get_setting('join.segments', bool):
                
         # Concating fragments
-        if (plugin.get_setting('output.format') == "0"): # mkv
-            output_format="mkv"
-        if (plugin.get_setting('output.format') == "1"): # ts
+        if (plugin.get_setting('output.format') == "0"): # ts
             output_format="ts"
+            output_format_ffmpeg="mpegts"
+        if (plugin.get_setting('output.format') == "1"): # mp4
+            output_format="mp4"
+            output_format_ffmpeg="mp4"
+        if (plugin.get_setting('output.format') == "2"): # matroska
+            output_format="mkv"
+            output_format_ffmpeg="matroska"
         ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + output_format)
-        temp_file_path = os.path.join(ffmpeg_dir, filename + '-temp.' + output_format)
+        temp_file_path = os.path.join(ffmpeg_dir, filename + '-temp.ts')
         tempFile = open(temp_file_path, "wb")
         for fileName in sorted(os.listdir(ffmpeg_dir)):
-            if fileName.startswith(filename+"_") and fileName.endswith(output_format):
+            if fileName.startswith(filename+"_") and fileName.endswith('ts'):
                 # log("Joining: {}".format(fileName))
                 temp = open(ffmpeg_dir+"/"+fileName, "rb")
                 # tempFile.write(temp.read())
@@ -546,7 +551,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
              "-c:v", "copy", "-c:a", "aac", "-map","0" ]
              
         if (plugin.get_setting('ffmpeg.pipe', str) == 'true') and not (windows() and (plugin.get_setting('task.scheduler', str) == 'true')):
-            cmd = cmd + ['-f', 'mpegts', '-']
+            cmd = cmd + ['-f', output_format_ffmpeg, '-movflags', 'frag_keyframe+empty_moov', '-']
         else:
             cmd.append(ffmpeg_recording_path)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
@@ -595,10 +600,11 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     archive_type = plugin.get_setting('external.m3u.archive', str)
     log('Settings: {}'.format(archive_type))
 
-    if (plugin.get_setting('output.format') == "0"): # mkv
-        output_format="mkv"
-    if (plugin.get_setting('output.format') == "1"): # ts
-        output_format="ts"
+    # if (plugin.get_setting('output.format') == "0"): # mkv
+    #     output_format="mkv"
+    # if (plugin.get_setting('output.format') == "1"): # ts
+    #     output_format="ts"
+    output_format="ts"
     if (plugin.get_setting('external.m3u.archive', str) == "0"): # TeleEleVidenie
         url=url+"?utc={}&lutc={}".format(start,stop)
     if (plugin.get_setting('external.m3u.archive', str) == "1"): # PlusX.tv
