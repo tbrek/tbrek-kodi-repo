@@ -543,7 +543,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         probe_cmd = cmd
         cmd = probe_cmd + \
             ["-fflags", "+genpts",
-             "-c:v", "copy", "-c:a", "copy", "-map","0" ]
+             "-c:v", "copy", "-c:a", "aac", "-map","0" ]
              
         if (plugin.get_setting('ffmpeg.pipe', str) == 'true') and not (windows() and (plugin.get_setting('task.scheduler', str) == 'true')):
             cmd = cmd + ['-f', 'mpegts', '-']
@@ -615,7 +615,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     log(cmd)
     probe_cmd = cmd
     ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + output_format)
-    cmd = probe_cmd + ["-y", "-t", str(duration), "-fflags","+genpts","-c:v","copy","-c:a","copy"]
+    cmd = probe_cmd + ["-y", "-t", str(duration), "-fflags","+genpts","-c:v","copy","-c:a","aac"]
     if plugin.get_setting('audio.tracks', bool):
         cmd = cmd + ['-map','0']
     ffmpeg_reconnect = plugin.get_setting('ffmpeg.reconnect', bool)
