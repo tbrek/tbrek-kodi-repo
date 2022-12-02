@@ -203,7 +203,7 @@ def add_to_queue(channelname, name, start, stop):
     filename = str(stop + '-' + channelname + ' - ' + name + ' - ' + start + ' - ' + stop)
     filename = sane_filename(filename)
     filename = filename[:50]
-    log(filename)
+    # log(filename)
     addon_data = xbmcvfs.translatePath(plugin.addon.getAddonInfo('profile'))
     dir = os.path.join(addon_data, 'queue')
     xbmcvfs.mkdirs(dir)
@@ -560,7 +560,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         f.close()
         video = xbmcvfs.File(ffmpeg_recording_path, "w")
         # playing = False
-        log("CMD: {}".format(cmd))
+        # log("CMD: {}".format(cmd))
         while True:
             data = p.stdout.read(1000000)
             if data:
@@ -598,7 +598,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     cmd.append('-i')
     # Load archive format
     archive_type = plugin.get_setting('external.m3u.archive', str)
-    log('Settings: {}'.format(archive_type))
+    # log('Settings: {}'.format(archive_type))
 
     # if (plugin.get_setting('output.format') == "0"): # mkv
     #     output_format="mkv"
@@ -618,7 +618,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     for h in headers:
         cmd.append("-headers")
         cmd.append("%s:%s" % (h, headers[h]))
-    log(cmd)
+    # log(cmd)
     probe_cmd = cmd
     ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + output_format)
     cmd = probe_cmd + ["-y", "-t", str(duration), "-fflags","+genpts","-c:v","copy","-c:a","aac"]
@@ -636,7 +636,7 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
         cmd.append(ffmpeg_recording_path)
     
 
-    log("Command: {}".format(cmd))
+    # log("Command: {}".format(cmd))
     return cmd, ffmpeg_recording_path
 
 @plugin.route('/convert/<path>')
@@ -702,7 +702,7 @@ def sane_name(name):
 
 def refresh():
     containerAddonName = xbmc.getInfoLabel('Container.PluginName')
-    log(containerAddonName)
+    # log(containerAddonName)
     AddonName = xbmcaddon.Addon().getAddonInfo('id')
     if (containerAddonName == AddonName):
         xbmc.executebuiltin('Container.Refresh')
@@ -941,9 +941,9 @@ def xmltv():
     for _, _, tvg_id, _, groups, _, _ in streams_to_insert:
         if groups in load_groups:
             load_channels[tvg_id] = ""
-    log("-----------------------------------------Streams----------------------")
-    log(streams_to_insert)
-    log("-------------------------------------------End------------------------")
+    # log("-----------------------------------------Streams----------------------")
+    # log(streams_to_insert)
+    # log("-------------------------------------------End------------------------")
     dialog.update(0, message=get_string("Creating database"))
     databasePath = os.path.join(profilePath, 'xmltv.db')
     conn = sqlite3.connect(databasePath, detect_types=sqlite3.PARSE_DECLTYPES)
