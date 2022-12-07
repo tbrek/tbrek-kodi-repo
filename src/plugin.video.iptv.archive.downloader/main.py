@@ -491,11 +491,11 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
     
     lengthSeconds = lutc-utc
     partLength = int(plugin.get_setting('part.length', str) or "3600")
-    # log("Part length: {}s".format(partLength))
+    log("Part length: {}s".format(partLength))
     numberOfParts = math.floor((lutc-utc)/partLength)
-    # log("Number of parts: {}".format(numberOfParts))
+    log("Number of parts: {}".format(numberOfParts))
     remainingSeconds = lengthSeconds-(numberOfParts*partLength)
-    # log("Remaining secods: {}".format(remainingSeconds))
+    log("Remaining secods: {}".format(remainingSeconds))
     xbmcgui.Dialog().notification("{}: {}".format(
         addon.getLocalizedString(30053), channelname), title, sound=True)
     # Recording hour bits
@@ -506,7 +506,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         duration=partLength
         tempFilename = filename+"_"+"{}".format(part)
         cmd, ffmpeg_recording_path = getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, tempFilename, duration)
-        # log("Command: {}".format(cmd))
+        log("Command recording main parts: {}".format(cmd))
         recordSegment(cmd, ffmpeg_recording_path)        
     # Recording remaining minutes
     if remainingSeconds !=0:
@@ -516,6 +516,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         tempFilename = filename+"_"+"{}".format(numberOfParts)
         cmd, ffmpeg_recording_path = getCmd(start,stop, cmd, past_recording, url, headers, ffmpeg_dir, tempFilename, remainingSeconds)
         recordSegment(cmd, ffmpeg_recording_path)
+        log("Command recording remaining bit: {}".format(cmd))
         numberOfParts += 1
     # Do you want to concat it all together  
     if plugin.get_setting('join.segments', bool):
@@ -535,7 +536,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
         tempFile = open(temp_file_path, "wb")
         for fileName in sorted(os.listdir(ffmpeg_dir)):
             if fileName.startswith(filename+"_") and fileName.endswith('ts'):
-                # log("Joining: {}".format(fileName))
+                log("Joining: {}".format(fileName))
                 temp = open(ffmpeg_dir+"/"+fileName, "rb")
                 # tempFile.write(temp.read())
                 shutil.copyfileobj(temp, tempFile)
@@ -554,13 +555,13 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
             cmd = cmd + ['-f', output_format_ffmpeg, '-movflags', 'frag_keyframe+empty_moov', '-']
         else:
             cmd.append(ffmpeg_recording_path)
+        log("Convert CMD: {}".format(cmd))
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
         f = xbmcvfs.File(ffmpeg_recording_path, "w")
         f.write(bytearray(repr(p.pid).encode('utf-8')))
         f.close()
         video = xbmcvfs.File(ffmpeg_recording_path, "w")
         # playing = False
-        # log("CMD: {}".format(cmd))
         while True:
             data = p.stdout.read(1000000)
             if data:
@@ -568,6 +569,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
             else:
                 break
         video.close()
+        log("Deleteing temporary file: {}".format(temp_file_path))
         os.remove(temp_file_path)
         
     os.remove(str(new_queue_file_path))
