@@ -532,7 +532,9 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
             output_format="mkv"
             output_format_ffmpeg="matroska"
         ffmpeg_recording_path = os.path.join(ffmpeg_dir, filename + '.' + output_format)
+        log("Destination file: {}".format(ffmpeg_recording_path))
         temp_file_path = os.path.join(ffmpeg_dir, filename + '-temp.ts')
+        log("Temporary file: {}".format(temp_file_path))
         tempFile = open(temp_file_path, "wb")
         for fileName in sorted(os.listdir(ffmpeg_dir)):
             if fileName.startswith(filename+"_") and fileName.endswith('ts'):
@@ -541,6 +543,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
                 # tempFile.write(temp.read())
                 shutil.copyfileobj(temp, tempFile)
                 temp.close()
+                log("Deleting part: {}".format(fileName))
                 os.remove(ffmpeg_dir+"/"+fileName)
         tempFile.close()
         cmd = [ffmpeg]
@@ -551,10 +554,10 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
             ["-fflags", "+genpts",
              "-c:v", "copy", "-c:a", "aac", "-map","0" ]
              
-        if (plugin.get_setting('ffmpeg.pipe', str) == 'true') and not (windows() and (plugin.get_setting('task.scheduler', str) == 'true')):
-            cmd = cmd + ['-f', output_format_ffmpeg, '-movflags', 'frag_keyframe+empty_moov', '-']
-        else:
-            cmd.append(ffmpeg_recording_path)
+        # if (plugin.get_setting('ffmpeg.pipe', str) == 'true') and not (windows() and (plugin.get_setting('task.scheduler', str) == 'true')):
+        cmd = cmd + ['-f', output_format_ffmpeg, '-movflags', 'frag_keyframe+empty_moov', '-']
+        # else:
+        # cmd.append(ffmpeg_recording_path)
         log("Convert CMD: {}".format(cmd))
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
         f = xbmcvfs.File(ffmpeg_recording_path, "w")
