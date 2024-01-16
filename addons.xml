@@ -3,6 +3,7 @@
   <requires>
     <import addon="xbmc.python" version="2.2.0" />
     <import addon="xbmc.addon" version="17.9.910" />
+    <import addon="xbmc.gui" version="5.14.0" />
     <import addon="script.module.xbmcswift2" version="2.4.0" />
     <import addon="script.module.requests" version="2.9.1" />
     <import addon="script.module.chardet" />
@@ -110,6 +111,7 @@ Initial version.
   <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="xbmc.addon" version="19.1.0" />
+    <import addon="xbmc.gui" version="5.15.0" />
     <import addon="script.module.xbmcswift2" />
     <import addon="script.module.requests" />
     <import addon="script.module.chardet" />
@@ -244,6 +246,7 @@ Initial version.
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
     <import addon="xbmc.addon" version="20.90.101" />
+    <import addon="xbmc.gui" version="5.16.0" />
     <import addon="script.module.xbmcswift2" />
     <import addon="script.module.requests" />
     <import addon="script.module.chardet" />
