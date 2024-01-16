@@ -9,7 +9,6 @@
     <import addon="script.module.chardet" />
     <import addon="script.module.pytz" />
     <import addon="script.module.dateutil" />
-    <import addon="script.module.kodi-six" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="main.py">
     <provides>video</provides>
@@ -109,7 +108,7 @@ Initial version.
   </extension>
 </addon><addon id="plugin.video.iptv.archive.downloader" version="0.7.6" name="IPTV Archive Downloader" provider-name="tbrek">
   <requires>
-    <import addon="xbmc.python" version="3.0.0" />
+    <import addon="xbmc.python" version="5.0.0" />
     <import addon="xbmc.addon" version="19.1.0" />
     <import addon="xbmc.gui" version="5.15.0" />
     <import addon="script.module.xbmcswift2" />

@@ -9,7 +9,6 @@
     <import addon="script.module.chardet" />
     <import addon="script.module.pytz" />
     <import addon="script.module.dateutil" />
-    <import addon="script.module.kodi-six" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="main.py">
     <provides>video</provides>
