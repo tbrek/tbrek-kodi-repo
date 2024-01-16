@@ -1,0 +1,257 @@
+# Kodi Media Center language file
+# Addon Name: IPTV Archive Downloader
+# Addon id: plugin.video.iptv.archive.downloader
+# Addon Provider: me@tombrek.com
+msgid ""
+msgstr ""
+"Project-Id-Version: Kodi Main\n"
+"Report-Msgid-Bugs-To: me@tombrek.com\n"
+"POT-Creation-Date: 2021-01-11 15:40+0200\n"
+"PO-Revision-Date: 2021-01-11 15:56+0200\n"
+"Last-Translator: Tom Brek <me@tombrek.com>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgctxt "#30000"
+msgid "Recording path"
+msgstr "Ścieżka nagrywania"
+
+msgctxt "#30001"
+msgid "Pipe ffmpeg output through Kodi (for network folders)"
+msgstr "Pozwól ffmpeg używać Kodi do zapisu (foldery sieciowe)"
+
+msgctxt "#30002"
+msgid "URL encode whole filename"
+msgstr "Zakoduj całą nazwę pliku"
+
+msgctxt "#30003"
+msgid "Create JSON file"
+msgstr "Utwórz plik JSON"
+
+msgctxt "#30004"
+msgid "Create NFO file"
+msgstr "Utwórz plik NFO"
+
+msgctxt "#30005"
+msgid "Create artwork file"
+msgstr "Utwórz plik z miniaturą"
+
+msgctxt "#30006"
+msgid "ffmpeg path"
+msgstr "Ścieżka do ffmpeg"
+
+msgctxt "#30007"
+msgid "ffmpeg reconnect arguments"
+msgstr "Wznawiaj przerwane połączenie"
+
+msgctxt "#30008"
+msgid "Optional extra ffmpeg arguments"
+msgstr "Opcje ffmpeg"
+
+msgctxt "#30009"
+msgid "ffmpeg file extension (ts is recommended)"
+msgstr "Rozszerzenie pliku ffmpeg (zalecane .ts)"
+
+msgctxt "#30010"
+msgid "Post-processing command "
+msgstr "Komenda do post-procesu"
+
+msgctxt "#30011"
+msgid "Minutes Before"
+msgstr "Minut przed"
+
+msgctxt "#30012"
+msgid "Minutes After"
+msgstr "Minut po"
+
+msgctxt "#30013"
+msgid "Segment length (seconds)"
+msgstr "Długość segmentu (w sekundach)"
+
+msgctxt "#30014"
+msgid "Join segments after downloading"
+msgstr "Połącz segmentu po probraniu"
+
+msgctxt "#30015"
+msgid "Silent Notifications"
+msgstr "Wycisz powiadomienia"
+
+msgctxt "#30016"
+msgid "M3U"
+msgstr "M3U"
+
+msgctxt "#30018"
+msgid "External m3u"
+msgstr "Plik M3U"
+
+msgctxt "#30019"
+msgid "Path to file"
+msgstr "Ścieżka do pliku"
+
+msgctxt "#30020"
+msgid "URL address"
+msgstr "Adres URL"
+
+msgctxt "#30021"
+msgid "External m3u Time Shift (hours)"
+msgstr "Przeusnięcie czasowe (w godzinach)"
+
+msgctxt "#30022"
+msgid "General"
+msgstr "Ogólne"
+
+msgctxt "#30023"
+msgid "Service"
+msgstr "Zaawansowane"
+
+msgctxt "#30024"
+msgid "Startup Delay (seconds)"
+msgstr "Opóźnij start (w sekundach)"
+
+msgctxt "#30025"
+msgid "Background Service"
+msgstr "Uruchom w tle"
+
+msgctxt "#30026"
+msgid "Update on Login"
+msgstr "Aktualizuj przy starcie"
+
+msgctxt "#30027"
+msgid "Service Schedule Type"
+msgstr "Typ harmonogramu usług"
+
+msgctxt "#30028"
+msgid "Interval (hours)"
+msgstr "Interwał (w godzinach)"
+
+msgctxt "#30029"
+msgid "Service Time"
+msgstr "Czas"
+
+msgctxt "#30031"
+msgid "IPTV Simple Client"
+msgstr "IPTV Simple Client"
+
+msgctxt "#30032"
+msgid "File"
+msgstr "Plik"
+
+msgctxt "#30033"
+msgid "URL"
+msgstr "URL"
+
+msgctxt "#30034"
+msgid "Period"
+msgstr "Okresowo"
+
+msgctxt "#30035"
+msgid "Time"
+msgstr "Godzina"
+
+msgctxt "#30036"
+msgid "None"
+msgstr "Brak"
+
+msgctxt "#30050"
+msgid "Can not download live stream"
+msgstr "Nie można pobrać transmisji na żywo"
+
+msgctxt "#30051"
+msgid "Please try again when programme is finished"
+msgstr "Poczekaj do ukończenia programu"
+
+msgctxt "#30052"
+msgid "Database not found"
+msgstr "Baza danych nie odnaleziona"
+
+msgctxt "#30053"
+msgid "Downloading"
+msgstr "Pobieranie"
+
+msgctxt "#30054"
+msgid "Downloading completed"
+msgstr "Pobieranie zakoczończone"
+
+msgctxt "#30055"
+msgid "Downloaded"
+msgstr "Pobrano"
+
+msgctxt "#30056"
+msgid "ffmpeg exe not found!"
+msgstr "Nie odnaleziono ffmpeg!"
+
+msgctxt "#30057"
+msgid "Erase DB and start again?"
+msgstr "Wyczyść bazę danych i zacznij od nowa?"
+
+msgctxt "#30058"
+msgid "Recordings Folder"
+msgstr "Nagrania"
+
+msgctxt "#30059"
+msgid "Erase DB"
+msgstr "Wyczyść bazę danych"
+
+msgctxt "#30060"
+msgid "Settings"
+msgstr "Ustawienia"
+
+msgctxt "#30061"
+msgid "Download using timeframes"
+msgstr "Pobierz używając znaczników czasu"
+
+msgctxt "#30062"
+msgid "Download from Archive"
+msgstr "Pobierz z archiwum"
+
+msgctxt "#30063"
+msgid "Confirm downloading"
+msgstr "Potwierdź pobieranie"
+
+msgctxt "#30064"
+msgid "You are about to download stream"
+msgstr "Zamierzasz pobrać strumień w przedziale"
+
+msgctxt "#30065"
+msgid "Enter start time"
+msgstr "Podaj start"
+
+msgctxt "#30066"
+msgid "Enter end time"
+msgstr "Podaj koniec"
+
+msgctxt "#30067"
+msgid "Could not download recording"
+msgstr "Pobieranie z archiwum nieudane"
+
+msgctxt "#30068"
+msgid "Error parsing dates"
+msgstr "Błąd przetwarzania daty"
+
+msgctxt "#30069"
+msgid "PVR IPTV Archive Client"
+msgstr "PVR IPTV Archive Client"
+
+msgctxt "#30070"
+msgid "Archive format"
+msgstr "Format archiwum"
+
+msgctxt "#30071"
+msgid "Custom"
+msgstr "Inny"
+
+msgctxt "#30072"
+msgid "TeleEleVidenie"
+msgstr "TeleEleVidenie"
+
+msgctxt "#30073"
+msgid "PlusX.tv"
+msgstr "PlusX.tv"
+
+msgctxt "#30074"
+msgid "Create subfolder for each channel"
+msgstr "Utwórz folder dla każdego kanału"
