@@ -18,4 +18,5 @@ branches:
   only:
     - matrix
     - leia
+    - nexus
     # Add more branches if required
