@@ -243,7 +243,8 @@ Initial version.
   </extension>
 </addon><addon id="plugin.video.iptv.archive.downloader" version="0.8.0" name="IPTV Archive Downloader" provider-name="tbrek">
   <requires>
-    <import addon="xbmc.python" version="3.0.0" />
+    
+    <import addon="xbmc.gui" version="5.16.0" />
     <import addon="script.module.xbmcswift2" />
     <import addon="script.module.requests" />
     <import addon="script.module.chardet" />
