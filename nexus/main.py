@@ -453,7 +453,9 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
    
     # Get artwork
     if plugin.get_setting('artwork', bool):
-        artwork_url = xbmc.getInfoLabel("ListItem.Icon")
+        artwork_url_temp = xbmc.getInfoLabel("ListItem.Icon")
+        artwork_url = str(re.search('@(.*)/', artwork_url_temp).group(1)).replace('%3a',':').replace('%2f','/')
+
         r = requests.get(artwork_url, stream=True)
 
         if r.status_code == 200:
@@ -832,32 +834,18 @@ def xmltv():
     shifts = {}
     streams_to_insert = []
 
-    
-    # log("--------------------------> Check m3u in: {}".format(plugin.get_setting('external.m3u', str)))
     dialog.update(0, message=get_string("Finding streams"))
     mode = plugin.get_setting('external.m3u', str)
     if mode == "0":
         try:
-            m3uPathType = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPathType')
-            if m3uPathType == "0":
-                path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uPath')
-            else:
-                path = xbmcaddon.Addon('pvr.iptvsimple').getSetting('m3uUrl')
+            path = plugin.get_setting('external.m3u.file',str)
         except:
             path = ""
-    elif mode == "1":
-        try:
-            m3uPathType = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPathType')
-            if m3uPathType == "0":
-                path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uPath')
-            else:
-                path = xbmcaddon.Addon('pvr.iptvarchive').getSetting('m3uUrl')
-        except:
-            path = ""
-    elif mode == "2":
-        path = plugin.get_setting('external.m3u.file', str)
     else:
-        path = plugin.get_setting('external.m3u.url', str)
+        try:
+            path = plugin.get_setting('external.m3u.url',str)
+        except:
+            path = ""
 
     if path:
         m3uFile = 'special://profile/addon_data/plugin.video.iptv.archive.downloader/channels.m3u'

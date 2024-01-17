@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import locale
 import time
+import re       
 from datetime import datetime
 from dateutil import parser
 from kodi_six import xbmc, xbmcgui, xbmcaddon
@@ -125,13 +126,6 @@ title = title.replace("\u0179", "Z")
 title = title.replace("\u017c", "z")
 title = title.replace("\u017b", "Z")
 title = title.replace("\u017a", "z")
-
-
-# start = extract_date("ListItem.StartDate", "ListItem.StartTime")
-# stop = extract_date("ListItem.EndDate", "ListItem.EndTime")
-# log("Start: {}".format(start))
-# log("Stop: {}".format(stop))
-    
 
 try:
     start = extract_date("ListItem.StartDate", "ListItem.StartTime")
