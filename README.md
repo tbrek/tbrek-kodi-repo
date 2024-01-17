@@ -1,7 +1,30 @@
-# Matrix version
+# IPTV Archive Downloader
+## plugin.video.iptv.archive.downloader
 
-[![Travis](https://img.shields.io/travis/tbrek/tbrek-kodi-repo.svg?style=flat-square)](https://travis-ci.com/tbrek/tbrek-kodi-repo/)
+Kodi addon for downloading streams from the IPTV Simple Client archive
+
+This addon is an easily extensible python addon that should work with any device.
+
+You will need a version of ffmpeg for your device.
+
+https://ffmpeg.org/
+
+Android builds are here: https://github.com/WritingMinds/ffmpeg-android/releases/latest
+
+On Android this addon will copy ffmpeg to the /data/data folder so it can run.
 
 
-[Repo URL](https://tbrek.github.io/tbrek-kodi-repo/)
+## Repository URL:
+https://github.com/tbrek/tbrek-kodi-repo/raw/main/repo/repository.tbrek-kodi-1.0.1.zip
 
+
+## For manual installation:
+
+### Leia (18)
+https://github.com/tbrek/tbrek-kodi-repo/raw/main/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.4.8.zip
+
+### Matrix (19)
+https://github.com/tbrek/tbrek-kodi-repo/raw/main/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.7.6.zip
+
+### Nexus (20)
+https://github.com/tbrek/tbrek-kodi-repo/raw/main/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.8.1.zip
