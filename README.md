@@ -28,3 +28,5 @@ https://github.com/tbrek/tbrek-kodi-repo/raw/main/plugin.video.iptv.archive.down
 
 ### Nexus (20)
 https://github.com/tbrek/tbrek-kodi-repo/raw/main/plugin.video.iptv.archive.downloader/plugin.video.iptv.archive.downloader-0.8.1.zip
+
+### NB: Due to addon instances it is now required to point Archive Downloader to the same file/url used in IPTV Simple plugin.
