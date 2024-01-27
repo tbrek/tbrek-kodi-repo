@@ -47,6 +47,13 @@ def saneDate(fullDate):
         "pi\u0105tek" : "Friday",               "Pi\u0105tek" : "Friday", 
         "sobota" : "Saturday",                  "Sobota" : "Saturday",
         "niedziela" : "Sunday",                 "Niedziela" : "Sunday",
+        "lunes" : "Monday",                     "Lunes" : "Monday",
+        "martes" : "Tuesday",                   "Martes" : "Tuesday",
+        "mi\u00e9rcoles" : "Wednesday",         "Mi\u00e9rcoles" : "Wednesday",
+        "jueves" : "Thursday",                  "Jueves" : "Thursday",
+        "viernes" : "Friday",                   "Viernes" : "Friday",
+        "s\u00e1bado" : "Saturday",             "S\u00e1bado" : "Saturday",
+        "domingo" : "Sunday",                   "Domingo" : "Sunday"
     }
 
     for k, v in lookup_table.items():

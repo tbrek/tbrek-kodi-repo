@@ -47,6 +47,13 @@ def saneDate(fullDate):
         "pi\u0105tek" : "Friday",               "Pi\u0105tek" : "Friday", 
         "sobota" : "Saturday",                  "Sobota" : "Saturday",
         "niedziela" : "Sunday",                 "Niedziela" : "Sunday",
+        "lunes" : "Monday",                     "Lunes" : "Monday",
+        "martes" : "Tuesday",                   "Martes" : "Tuesday",
+        "mi\u00e9rcoles" : "Wednesday",         "Mi\u00e9rcoles" : "Wednesday",
+        "jueves" : "Thursday",                  "Jueves" : "Thursday",
+        "viernes" : "Friday",                   "Viernes" : "Friday",
+        "s\u00e1bado" : "Saturday",             "S\u00e1bado" : "Saturday",
+        "domingo" : "Sunday",                   "Domingo" : "Sunday"
     }
 
     for k, v in lookup_table.items():
@@ -108,19 +115,31 @@ title = title.replace('%2C', " -")
 title = title.replace(':', " -")
 title = title.replace("%3A", " -")
 title = title.replace("\u0104", "A")
+title = title.replace("\u00c1", "A")
 title = title.replace("\u0105", "a")
+title = title.replace("\u01e1", "a")
 title = title.replace("\u0106", "C")
 title = title.replace("\u0107", "c")
 title = title.replace("\u0118", "E")
+title = title.replace("\u00c9", "E")
 title = title.replace("\u0119", "e")
+title = title.replace("\u00e9", "e")
+title = title.replace("\u00cd", "I")
+title = title.replace("\u00ed", "i")
 title = title.replace("\u0141", "L")
 title = title.replace("\u0142", "l")
 title = title.replace("\u0143", "N")
 title = title.replace("\u0144", "n")
 title = title.replace("\u00f2", "O")
 title = title.replace("\u00f3", "o")
+title = title.replace("\u00d3", "O")
+title = title.replace("\u00f3", "o")
 title = title.replace("\u015a", "S")
 title = title.replace("\u015b", "s")
+title = title.replace("\u00da", "U")
+title = title.replace("\u00fa", "u")
+title = title.replace("\u00d1", "N")
+title = title.replace("\u00f1", "n")
 title = title.replace("\u0179", "Z")
 title = title.replace("\u017a", "z")
 title = title.replace("\u017b", "Z")
