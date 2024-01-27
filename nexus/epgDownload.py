@@ -29,6 +29,18 @@ def extract_date(dateLabel, timeLabel):
 
 def saneDate(fullDate):
     lookup_table = {
+        "de Enero de": "January",
+        "de Febrero de": "February",
+        "de Marzo de": "March",
+        "de Abril de": "April",
+        "de Mayo de": "May",
+        "de Junio de": "June",
+        "de Julio de": "July",
+        "de Agosto de": "August",
+        "de Septiembre de": "Semptember",
+        "de Octubre de": "October",
+        "de Noviembre de": "November",
+        "de Diciembre de": "December",
         "stycznia": "January",                  "Stycznia": "January",
         "lutego": "February",                   "Lutego": "February",
         "marca": "March",                       "Marca": "March",
