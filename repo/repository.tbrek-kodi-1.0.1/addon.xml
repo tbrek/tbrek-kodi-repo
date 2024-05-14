@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.tbrek-kodi" name="tbrek-kodi Repository" version="1.0.1" provider-name="tombrek.com">
+  <extension point="xbmc.addon.repository" name="tbrek-kodi Repository">
+    <dir>
+	  <info compressed="false">https://raw.githubusercontent.com/tbrek/tbrek-kodi-repo/main/addons.xml</info>
+	  <checksum>https://raw.githubusercontent.com/tbrek/tbrek-kodi-repo/main/addons.xml.md5</checksum>
+	  <datadir zip="true">https://github.com/tbrek/tbrek-kodi-repo/raw/main/</datadir>
+    </dir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+	<summary lang="en_GB">m-Tom Brek repository</summary>
+	<description lang="en_GB">IPTV archive downloader for Kodi.</description>
+	<disclaimer lang="en_GB">This add-on is unoffical and is not endorsed or supported by any of the services provided in any way. Any trademarks used belong to their owning companies and organisations.</disclaimer>
+	<language>en</language>
+	<platform>all</platform>
+	<license>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 and MIT LICENSE.</license>
+	<forum>https://github.com/tbrek/tbrek-kodi-repo/issueso</forum>
+	<website>https://github.com/tbrek/tbrek-kodi-repo</website>
+	<source>Tom Brek © 2020 - 2024</source>
+	<assets>
+	  <icon>icon.png</icon>
+	</assets>
+  </extension>
+</addon>
