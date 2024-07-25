@@ -378,6 +378,7 @@ def record_once_thread(programmeid, do_refresh=True, watch=False, remind=False, 
 
     url_headers = url.split('|', 1)
     url = url_headers[0]
+
     headers = {}
     if len(url_headers) == 2:
         sheaders = url_headers[1]
@@ -615,7 +616,19 @@ def getCmd(start, stop, cmd, past_recording, url, headers, ffmpeg_dir, filename,
     if (plugin.get_setting('external.m3u.archive', str) == "0"): # TeleEleVidenie
         url=url+"?utc={}&lutc={}".format(start,stop)
     if (plugin.get_setting('external.m3u.archive', str) == "1"): # PlusX.tv
-        url=url+"&utc={}&lutc={}".format(start,stop)
+        legacy_url=url+"&utc={}&lutc={}".format(start,stop)
+        offset = int(time.time()) - start
+        url=url.replace("mono.m3u8","mono-{}-{}".format(start,duration) + ".m3u8")
+        log("Stream info:")
+        log("Legacy URL:{}".format(legacy_url))
+        log("URL: {}".format(url))
+        log("Start: {}, Stop: {}, Offset: {}".format(start,stop,offset))
+
+        # PlusX URL Format
+        # http://cdnx1.plusx.tv:4000/144/mono.m3u8?token={{token}}
+        # http://cdnx1.plusx.tv:4000/138/mono-timeshift_rel-519409.m3u8?token={{token}}
+
+
     if (plugin.get_setting('external.m3u.archive', str) == "2"): # Custom
         archive_format = plugin.get_setting('external.m3u.custom', str).format(start,stop)
         url=url+archive_format
